@@ -1,0 +1,12 @@
+{
+  "name": "@reach-sh/f6298e8c1aafdfbf62eee120078d772c540ad7ab95630da223748b70bd9ab6ef",
+  "type": "module",
+  "dependencies": {
+  },
+  "author": "reach.sh",
+  "license": "Apache-2.0",
+  "scripts": {
+    "lint": "eslint --ignore-path .gitignore --ext .mjs .",
+    "index": "node --experimental-modules --unhandled-rejections=strict index.mjs"
+  }
+}

@@ -1,6 +1,6 @@
 import { loadStdlib, ask } from '@reach-sh/stdlib';
 import * as backend from './build/index.main.mjs';
-const stdlib = loadStdlib();
+const stdlib = loadStdlib(process.env);
 
 console.log(`New trade request: cross-cryptocurrency swap`);
 
@@ -25,8 +25,6 @@ if (createAcc) {
     acc = await stdlib.newAccountFromSecret(secret);    // substitute in for myAlgo wallet later using mnemonic
 }
 
-
-
 let ctc = null;
 if (isOwner) {
     ctc = acc.contract(backend);
@@ -41,19 +39,37 @@ if (isOwner) {
     ctc = acc.contract(backend, info);
 }
 
-// get before balances (do later)
+const tradeState = ctc.v.TradeState;    // gets view object
+let currTradeState = await tradeState.read();
+console.log(currTradeState);
+
+const fmt = (x) => stdlib.formatCurrency(x, 4);
+const getBalance = async () => fmt(await stdlib.balanceOf(acc));
+
+const before = await getBalance();
+console.log(`Your balance is ${before}`);
+
+const interact = {
+    getTradeState: () => tradeState
+};
+
+// is this redundant or best to keep and get rid of one above? or are both required?
+interact.getTradeState = async (state) => {
+    console.log(state);
+};
 
 if (isOwner) {
     const amt = await ask.ask(
         `Please enter principal amount`,
         stdlib.parseCurrency
     );
-    interact.initTerms = {"accepted": false,
-                         "owner": acc.getAddress(),
-                         "ctpy": null,
-                         "principalAmtOwner": amt};
-    interact.setInitTerms = (initTerms) => {
-        const terms = tradeTerms.fromTuple([initTerms['accepted'],initTerms['owner'],initTerms['ctpy'],initTerms['principalAmtOwner']])
+    interact.initTerms = {'accepted': false,
+                          'owner': acc.getAddress(),
+                          'ctpy': acc.getAddress(),
+                          'principalAmtOwner': amt};
+    interact.setInitTerms = (initTerms,ctpyAddr) => {
+        const terms = tradeTerms.fromTuple([true,initTerms['owner'],ctpyAddr,initTerms['principalAmtOwner']])
+        console.log(terms);
     };
     interact.isInitialised = () => {
         console.log(`Trade terms have been set`);
@@ -65,8 +81,7 @@ if (isOwner) {
         ask.yesno
     );
     if (accept) {
-        terms.accepted = true;
-        terms.ctpy = acc.getAddress();
+        const ctpyAddr = acc.getAddress();
     } else {
         process.exit(0);
     }
@@ -76,11 +91,9 @@ if (isOwner) {
   };
 }
 
-interact.getTradeState = async () => {
-    const state = tradeState.read();
-};
-
 const part = isOwner ? ctc.p.Owner : ctc.p.Ctpy;
 await part(interact);
 
 ask.done();
+
+console.log(currTradeState);
