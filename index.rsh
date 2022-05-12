@@ -106,8 +106,7 @@ export const main = Reach.App(() => {
         const initTerms = declassify(interact.setInitTerms(info));   // owner declassifies the initial terms of the swap contract they have chosen
     });
     Owner.publish(initTerms);
-    //commit();
-
+    
     // initialise Trade State view object to show terms set out by the owner upon deployment
     tradeState.read.set(    
         tradeTerms.fromObject(initTerms)
@@ -120,8 +119,6 @@ export const main = Reach.App(() => {
 
     // interact call lets owner know that the terms of the swap contract have been set and waiting for the counterparty
     Owner.interact.isInitialised();
-
-    //Ctpy.publish();
 
     // first local step by contract Counterparty
     Ctpy.only(() => {
@@ -147,9 +144,9 @@ export const main = Reach.App(() => {
 
         // test atomic single atomic swap first...
         Owner.only(() => {
-            const [ tokenOtC, amtOtC, tokenCtO, amtCtO, time ] = declassify(interact.getSwap());
+            const [ tokenOtC, amtOtC, tokenCtO, amtCtO, time ] = declassify(interact.getSwap());    // OtC = Owner to Ctpy, CtO = Ctpy to Owner
             assume(tokenOtC != tokenCtO); });
-        Owner.publish(tokenOtC, amtOtC, tokenCtO, amtCtO, time);    // how to set deadline to, and to what? (getSwap function in frontend will lift timeouts from trade terms/state)
+        Owner.publish(tokenOtC, amtOtC, tokenCtO, amtCtO, time);    
         commit();   
         Owner.pay([ [amtOtC, tokenOtC] ]);      // what about default by Owner? (I guess you can have a check somewhere that ensures Owner has sufficient balance?...)
         commit();
@@ -161,7 +158,7 @@ export const main = Reach.App(() => {
             .timeout(relativeTime(time), () => {
               Owner.publish();
               transfer(amtOtC, tokenOtC).to(Owner);     // returns Owner's funds back to Owner on timeout (i.e. default) from Counterparty
-              //each([Owner, Ctpy], () => interact.seeTimeout());
+              each([Owner, Ctpy], () => interact.seeTimeout());
               // default event
               commit();
               //exit();

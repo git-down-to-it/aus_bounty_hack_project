@@ -29,7 +29,7 @@ export function _getViews(s, viewlib) {
   const ctc1 = stdlib.T_Bool;
   const ctc2 = stdlib.T_UInt;
   const ctc3 = stdlib.T_Token;
-  const ctc4 = stdlib.T_Struct([['acceptedStatus', ctc1], ['defaultStatus', ctc1], ['principalTimeoutLimit', ctc2], ['interestTimeoutLimit', ctc2], ['token_Owner_borrow_Ctpy_lend', ctc3], ['token_Owner_lend_Ctpy_borrow', ctc3], ['termToMaturity', ctc2], ['pmtFrequency', ctc2], ['totalNumPmts', ctc2], ['prevPmt', ctc2], ['nextPmt', ctc2], ['contractAddress', ctc0], ['ownerAddress', ctc0], ['ctpyAddress', ctc0], ['principalAmtOwner', ctc2], ['spotExchangeRate', ctc2], ['principalAmtCtpy', ctc2], ['swapRateOwnerPay', ctc2], ['swapRateCtpyPay', ctc2], ['lockPrincipal', ctc1], ['haircut', ctc2]]);
+  const ctc4 = stdlib.T_Struct([['acceptedStatus', ctc1], ['defaultStatus', ctc1], ['principalTimeoutLimit', ctc2], ['interestTimeoutLimit', ctc2], ['token_Owner_borrow_Ctpy_lend', ctc2], ['token_Owner_lend_Ctpy_borrow', ctc2], ['termToMaturity', ctc2], ['pmtFrequency', ctc2], ['totalNumPmts', ctc2], ['prevPmt', ctc2], ['nextPmt', ctc2], ['contractAddress', ctc0], ['ownerAddress', ctc0], ['ctpyAddress', ctc0], ['principalAmtOwner', ctc2], ['spotExchangeRate', ctc2], ['principalAmtCtpy', ctc2], ['swapRateOwnerPay', ctc2], ['swapRateCtpyPay', ctc2], ['lockPrincipal', ctc1], ['haircut', ctc2]]);
   
   return {
     infos: {
@@ -37,188 +37,188 @@ export function _getViews(s, viewlib) {
         read: {
           decode: async (i, svs, args) => {
             if (stdlib.eq(i, stdlib.checkedBigNumberify('<builtin>', stdlib.UInt_max, '1'))) {
-              const [v280] = svs;
+              const [v286] = svs;
               stdlib.assert(false, 'illegal view')
               }
             if (stdlib.eq(i, stdlib.checkedBigNumberify('<builtin>', stdlib.UInt_max, '2'))) {
-              const [v280, v313, v314, v315, v316, v317, v318, v319, v320, v321, v322, v323, v324, v325, v326, v327, v328, v329, v330, v331, v332, v333] = svs;
+              const [v286, v319, v320, v321, v322, v323, v324, v325, v326, v327, v328, v329, v330, v331, v332, v333, v334, v335, v336, v337, v338, v339] = svs;
               return (await ((async () => {
                 
-                const v334 = {
-                  acceptedStatus: v313,
-                  contractAddress: v324,
-                  ctpyAddress: v326,
-                  defaultStatus: v314,
-                  haircut: v333,
-                  interestTimeoutLimit: v316,
-                  lockPrincipal: v332,
-                  nextPmt: v323,
-                  ownerAddress: v325,
-                  pmtFrequency: v320,
-                  prevPmt: v322,
-                  principalAmtCtpy: v329,
-                  principalAmtOwner: v327,
-                  principalTimeoutLimit: v315,
-                  spotExchangeRate: v328,
-                  swapRateCtpyPay: v331,
-                  swapRateOwnerPay: v330,
-                  termToMaturity: v319,
-                  token_Owner_borrow_Ctpy_lend: v317,
-                  token_Owner_lend_Ctpy_borrow: v318,
-                  totalNumPmts: v321
+                const v340 = {
+                  acceptedStatus: v319,
+                  contractAddress: v330,
+                  ctpyAddress: v332,
+                  defaultStatus: v320,
+                  haircut: v339,
+                  interestTimeoutLimit: v322,
+                  lockPrincipal: v338,
+                  nextPmt: v329,
+                  ownerAddress: v331,
+                  pmtFrequency: v326,
+                  prevPmt: v328,
+                  principalAmtCtpy: v335,
+                  principalAmtOwner: v333,
+                  principalTimeoutLimit: v321,
+                  spotExchangeRate: v334,
+                  swapRateCtpyPay: v337,
+                  swapRateOwnerPay: v336,
+                  termToMaturity: v325,
+                  token_Owner_borrow_Ctpy_lend: v323,
+                  token_Owner_lend_Ctpy_borrow: v324,
+                  totalNumPmts: v327
                   };
                 
-                return v334;}))(...args));
+                return v340;}))(...args));
               }
             if (stdlib.eq(i, stdlib.checkedBigNumberify('<builtin>', stdlib.UInt_max, '3'))) {
-              const [v280, v314, v315, v316, v317, v318, v319, v320, v321, v322, v323, v324, v325, v327, v328, v329, v330, v331, v332, v333, v340, v342] = svs;
+              const [v286, v320, v321, v322, v323, v324, v325, v326, v327, v328, v329, v330, v331, v333, v334, v335, v336, v337, v338, v339, v346, v348] = svs;
               return (await ((async () => {
                 
-                const v366 = {
+                const v372 = {
                   acceptedStatus: true,
-                  contractAddress: v324,
-                  ctpyAddress: v342,
-                  defaultStatus: v314,
-                  haircut: v333,
-                  interestTimeoutLimit: v316,
-                  lockPrincipal: v332,
-                  nextPmt: v323,
-                  ownerAddress: v325,
-                  pmtFrequency: v320,
-                  prevPmt: v322,
-                  principalAmtCtpy: v329,
-                  principalAmtOwner: v327,
-                  principalTimeoutLimit: v315,
-                  spotExchangeRate: v328,
-                  swapRateCtpyPay: v331,
-                  swapRateOwnerPay: v330,
-                  termToMaturity: v319,
-                  token_Owner_borrow_Ctpy_lend: v317,
-                  token_Owner_lend_Ctpy_borrow: v318,
-                  totalNumPmts: v321
+                  contractAddress: v330,
+                  ctpyAddress: v348,
+                  defaultStatus: v320,
+                  haircut: v339,
+                  interestTimeoutLimit: v322,
+                  lockPrincipal: v338,
+                  nextPmt: v329,
+                  ownerAddress: v331,
+                  pmtFrequency: v326,
+                  prevPmt: v328,
+                  principalAmtCtpy: v335,
+                  principalAmtOwner: v333,
+                  principalTimeoutLimit: v321,
+                  spotExchangeRate: v334,
+                  swapRateCtpyPay: v337,
+                  swapRateOwnerPay: v336,
+                  termToMaturity: v325,
+                  token_Owner_borrow_Ctpy_lend: v323,
+                  token_Owner_lend_Ctpy_borrow: v324,
+                  totalNumPmts: v327
                   };
                 
-                return v366;}))(...args));
+                return v372;}))(...args));
               }
             if (stdlib.eq(i, stdlib.checkedBigNumberify('<builtin>', stdlib.UInt_max, '4'))) {
-              const [v280, v314, v315, v316, v317, v318, v319, v320, v321, v322, v323, v324, v325, v327, v328, v329, v330, v331, v332, v333, v340, v342, v387, v388, v389, v390, v391] = svs;
+              const [v286, v320, v321, v322, v323, v324, v325, v326, v327, v328, v329, v330, v331, v333, v334, v335, v336, v337, v338, v339, v346, v348, v393, v394, v395, v396, v397] = svs;
               return (await ((async () => {
                 
-                const v366 = {
+                const v372 = {
                   acceptedStatus: true,
-                  contractAddress: v324,
-                  ctpyAddress: v342,
-                  defaultStatus: v314,
-                  haircut: v333,
-                  interestTimeoutLimit: v316,
-                  lockPrincipal: v332,
-                  nextPmt: v323,
-                  ownerAddress: v325,
-                  pmtFrequency: v320,
-                  prevPmt: v322,
-                  principalAmtCtpy: v329,
-                  principalAmtOwner: v327,
-                  principalTimeoutLimit: v315,
-                  spotExchangeRate: v328,
-                  swapRateCtpyPay: v331,
-                  swapRateOwnerPay: v330,
-                  termToMaturity: v319,
-                  token_Owner_borrow_Ctpy_lend: v317,
-                  token_Owner_lend_Ctpy_borrow: v318,
-                  totalNumPmts: v321
+                  contractAddress: v330,
+                  ctpyAddress: v348,
+                  defaultStatus: v320,
+                  haircut: v339,
+                  interestTimeoutLimit: v322,
+                  lockPrincipal: v338,
+                  nextPmt: v329,
+                  ownerAddress: v331,
+                  pmtFrequency: v326,
+                  prevPmt: v328,
+                  principalAmtCtpy: v335,
+                  principalAmtOwner: v333,
+                  principalTimeoutLimit: v321,
+                  spotExchangeRate: v334,
+                  swapRateCtpyPay: v337,
+                  swapRateOwnerPay: v336,
+                  termToMaturity: v325,
+                  token_Owner_borrow_Ctpy_lend: v323,
+                  token_Owner_lend_Ctpy_borrow: v324,
+                  totalNumPmts: v327
                   };
                 
-                return v366;}))(...args));
+                return v372;}))(...args));
               }
             if (stdlib.eq(i, stdlib.checkedBigNumberify('<builtin>', stdlib.UInt_max, '5'))) {
-              const [v280, v314, v315, v316, v317, v318, v319, v320, v321, v322, v323, v324, v325, v327, v328, v329, v330, v331, v332, v333, v340, v342, v387, v388, v389, v390, v430] = svs;
+              const [v286, v320, v321, v322, v323, v324, v325, v326, v327, v328, v329, v330, v331, v333, v334, v335, v336, v337, v338, v339, v346, v348, v393, v394, v395, v396, v436] = svs;
               return (await ((async () => {
                 
-                const v366 = {
+                const v372 = {
                   acceptedStatus: true,
-                  contractAddress: v324,
-                  ctpyAddress: v342,
-                  defaultStatus: v314,
-                  haircut: v333,
-                  interestTimeoutLimit: v316,
-                  lockPrincipal: v332,
-                  nextPmt: v323,
-                  ownerAddress: v325,
-                  pmtFrequency: v320,
-                  prevPmt: v322,
-                  principalAmtCtpy: v329,
-                  principalAmtOwner: v327,
-                  principalTimeoutLimit: v315,
-                  spotExchangeRate: v328,
-                  swapRateCtpyPay: v331,
-                  swapRateOwnerPay: v330,
-                  termToMaturity: v319,
-                  token_Owner_borrow_Ctpy_lend: v317,
-                  token_Owner_lend_Ctpy_borrow: v318,
-                  totalNumPmts: v321
+                  contractAddress: v330,
+                  ctpyAddress: v348,
+                  defaultStatus: v320,
+                  haircut: v339,
+                  interestTimeoutLimit: v322,
+                  lockPrincipal: v338,
+                  nextPmt: v329,
+                  ownerAddress: v331,
+                  pmtFrequency: v326,
+                  prevPmt: v328,
+                  principalAmtCtpy: v335,
+                  principalAmtOwner: v333,
+                  principalTimeoutLimit: v321,
+                  spotExchangeRate: v334,
+                  swapRateCtpyPay: v337,
+                  swapRateOwnerPay: v336,
+                  termToMaturity: v325,
+                  token_Owner_borrow_Ctpy_lend: v323,
+                  token_Owner_lend_Ctpy_borrow: v324,
+                  totalNumPmts: v327
                   };
                 
-                return v366;}))(...args));
+                return v372;}))(...args));
               }
             if (stdlib.eq(i, stdlib.checkedBigNumberify('<builtin>', stdlib.UInt_max, '6'))) {
-              const [v314, v315, v316, v317, v318, v319, v320, v321, v322, v323, v324, v325, v327, v328, v329, v330, v331, v332, v333, v340, v342, v387, v389] = svs;
+              const [v320, v321, v322, v323, v324, v325, v326, v327, v328, v329, v330, v331, v333, v334, v335, v336, v337, v338, v339, v346, v348, v393, v395] = svs;
               return (await ((async () => {
                 
-                const v366 = {
+                const v372 = {
                   acceptedStatus: true,
-                  contractAddress: v324,
-                  ctpyAddress: v342,
-                  defaultStatus: v314,
-                  haircut: v333,
-                  interestTimeoutLimit: v316,
-                  lockPrincipal: v332,
-                  nextPmt: v323,
-                  ownerAddress: v325,
-                  pmtFrequency: v320,
-                  prevPmt: v322,
-                  principalAmtCtpy: v329,
-                  principalAmtOwner: v327,
-                  principalTimeoutLimit: v315,
-                  spotExchangeRate: v328,
-                  swapRateCtpyPay: v331,
-                  swapRateOwnerPay: v330,
-                  termToMaturity: v319,
-                  token_Owner_borrow_Ctpy_lend: v317,
-                  token_Owner_lend_Ctpy_borrow: v318,
-                  totalNumPmts: v321
+                  contractAddress: v330,
+                  ctpyAddress: v348,
+                  defaultStatus: v320,
+                  haircut: v339,
+                  interestTimeoutLimit: v322,
+                  lockPrincipal: v338,
+                  nextPmt: v329,
+                  ownerAddress: v331,
+                  pmtFrequency: v326,
+                  prevPmt: v328,
+                  principalAmtCtpy: v335,
+                  principalAmtOwner: v333,
+                  principalTimeoutLimit: v321,
+                  spotExchangeRate: v334,
+                  swapRateCtpyPay: v337,
+                  swapRateOwnerPay: v336,
+                  termToMaturity: v325,
+                  token_Owner_borrow_Ctpy_lend: v323,
+                  token_Owner_lend_Ctpy_borrow: v324,
+                  totalNumPmts: v327
                   };
                 
-                return v366;}))(...args));
+                return v372;}))(...args));
               }
             if (stdlib.eq(i, stdlib.checkedBigNumberify('<builtin>', stdlib.UInt_max, '8'))) {
-              const [v314, v315, v316, v317, v318, v319, v320, v321, v322, v323, v324, v325, v327, v328, v329, v330, v331, v332, v333, v340, v342, v387, v389] = svs;
+              const [v320, v321, v322, v323, v324, v325, v326, v327, v328, v329, v330, v331, v333, v334, v335, v336, v337, v338, v339, v346, v348, v393, v395] = svs;
               return (await ((async () => {
                 
-                const v366 = {
+                const v372 = {
                   acceptedStatus: true,
-                  contractAddress: v324,
-                  ctpyAddress: v342,
-                  defaultStatus: v314,
-                  haircut: v333,
-                  interestTimeoutLimit: v316,
-                  lockPrincipal: v332,
-                  nextPmt: v323,
-                  ownerAddress: v325,
-                  pmtFrequency: v320,
-                  prevPmt: v322,
-                  principalAmtCtpy: v329,
-                  principalAmtOwner: v327,
-                  principalTimeoutLimit: v315,
-                  spotExchangeRate: v328,
-                  swapRateCtpyPay: v331,
-                  swapRateOwnerPay: v330,
-                  termToMaturity: v319,
-                  token_Owner_borrow_Ctpy_lend: v317,
-                  token_Owner_lend_Ctpy_borrow: v318,
-                  totalNumPmts: v321
+                  contractAddress: v330,
+                  ctpyAddress: v348,
+                  defaultStatus: v320,
+                  haircut: v339,
+                  interestTimeoutLimit: v322,
+                  lockPrincipal: v338,
+                  nextPmt: v329,
+                  ownerAddress: v331,
+                  pmtFrequency: v326,
+                  prevPmt: v328,
+                  principalAmtCtpy: v335,
+                  principalAmtOwner: v333,
+                  principalTimeoutLimit: v321,
+                  spotExchangeRate: v334,
+                  swapRateCtpyPay: v337,
+                  swapRateOwnerPay: v336,
+                  termToMaturity: v325,
+                  token_Owner_borrow_Ctpy_lend: v323,
+                  token_Owner_lend_Ctpy_borrow: v324,
+                  totalNumPmts: v327
                   };
                 
-                return v366;}))(...args));
+                return v372;}))(...args));
               }
             
             stdlib.assert(false, 'illegal view')
@@ -229,12 +229,12 @@ export function _getViews(s, viewlib) {
       },
     views: {
       1: [ctc0],
-      2: [ctc0, ctc1, ctc1, ctc2, ctc2, ctc3, ctc3, ctc2, ctc2, ctc2, ctc2, ctc2, ctc0, ctc0, ctc0, ctc2, ctc2, ctc2, ctc2, ctc2, ctc1, ctc2],
-      3: [ctc0, ctc1, ctc2, ctc2, ctc3, ctc3, ctc2, ctc2, ctc2, ctc2, ctc2, ctc0, ctc0, ctc2, ctc2, ctc2, ctc2, ctc2, ctc1, ctc2, ctc0, ctc0],
-      4: [ctc0, ctc1, ctc2, ctc2, ctc3, ctc3, ctc2, ctc2, ctc2, ctc2, ctc2, ctc0, ctc0, ctc2, ctc2, ctc2, ctc2, ctc2, ctc1, ctc2, ctc0, ctc0, ctc3, ctc2, ctc3, ctc2, ctc2],
-      5: [ctc0, ctc1, ctc2, ctc2, ctc3, ctc3, ctc2, ctc2, ctc2, ctc2, ctc2, ctc0, ctc0, ctc2, ctc2, ctc2, ctc2, ctc2, ctc1, ctc2, ctc0, ctc0, ctc3, ctc2, ctc3, ctc2, ctc2],
-      6: [ctc1, ctc2, ctc2, ctc3, ctc3, ctc2, ctc2, ctc2, ctc2, ctc2, ctc0, ctc0, ctc2, ctc2, ctc2, ctc2, ctc2, ctc1, ctc2, ctc0, ctc0, ctc3, ctc3],
-      8: [ctc1, ctc2, ctc2, ctc3, ctc3, ctc2, ctc2, ctc2, ctc2, ctc2, ctc0, ctc0, ctc2, ctc2, ctc2, ctc2, ctc2, ctc1, ctc2, ctc0, ctc0, ctc3, ctc3]
+      2: [ctc0, ctc1, ctc1, ctc2, ctc2, ctc2, ctc2, ctc2, ctc2, ctc2, ctc2, ctc2, ctc0, ctc0, ctc0, ctc2, ctc2, ctc2, ctc2, ctc2, ctc1, ctc2],
+      3: [ctc0, ctc1, ctc2, ctc2, ctc2, ctc2, ctc2, ctc2, ctc2, ctc2, ctc2, ctc0, ctc0, ctc2, ctc2, ctc2, ctc2, ctc2, ctc1, ctc2, ctc0, ctc0],
+      4: [ctc0, ctc1, ctc2, ctc2, ctc2, ctc2, ctc2, ctc2, ctc2, ctc2, ctc2, ctc0, ctc0, ctc2, ctc2, ctc2, ctc2, ctc2, ctc1, ctc2, ctc0, ctc0, ctc3, ctc2, ctc3, ctc2, ctc2],
+      5: [ctc0, ctc1, ctc2, ctc2, ctc2, ctc2, ctc2, ctc2, ctc2, ctc2, ctc2, ctc0, ctc0, ctc2, ctc2, ctc2, ctc2, ctc2, ctc1, ctc2, ctc0, ctc0, ctc3, ctc2, ctc3, ctc2, ctc2],
+      6: [ctc1, ctc2, ctc2, ctc2, ctc2, ctc2, ctc2, ctc2, ctc2, ctc2, ctc0, ctc0, ctc2, ctc2, ctc2, ctc2, ctc2, ctc1, ctc2, ctc0, ctc0, ctc3, ctc3],
+      8: [ctc1, ctc2, ctc2, ctc2, ctc2, ctc2, ctc2, ctc2, ctc2, ctc2, ctc0, ctc0, ctc2, ctc2, ctc2, ctc2, ctc2, ctc1, ctc2, ctc0, ctc0, ctc3, ctc3]
       }
     };
   
@@ -256,8 +256,7 @@ export async function Ctpy(ctcTop, interact) {
   const ctc0 = stdlib.T_Address;
   const ctc1 = stdlib.T_Bool;
   const ctc2 = stdlib.T_UInt;
-  const ctc3 = stdlib.T_Token;
-  const ctc4 = stdlib.T_Object({
+  const ctc3 = stdlib.T_Object({
     acceptedStatus: ctc1,
     contractAddress: ctc0,
     ctpyAddress: ctc0,
@@ -276,14 +275,15 @@ export async function Ctpy(ctcTop, interact) {
     swapRateCtpyPay: ctc2,
     swapRateOwnerPay: ctc2,
     termToMaturity: ctc2,
-    token_Owner_borrow_Ctpy_lend: ctc3,
-    token_Owner_lend_Ctpy_borrow: ctc3,
+    token_Owner_borrow_Ctpy_lend: ctc2,
+    token_Owner_lend_Ctpy_borrow: ctc2,
     totalNumPmts: ctc2
     });
-  const ctc5 = stdlib.T_Null;
+  const ctc4 = stdlib.T_Null;
+  const ctc5 = stdlib.T_Token;
   
   
-  const v279 = stdlib.protect(ctc0, interact.passAddr, 'for Ctpy\'s interact field passAddr');
+  const v285 = stdlib.protect(ctc0, interact.passAddr, 'for Ctpy\'s interact field passAddr');
   
   const txn1 = await (ctc.recv({
     didSend: false,
@@ -293,83 +293,83 @@ export async function Ctpy(ctcTop, interact) {
     timeoutAt: undefined /* mto */,
     waitIfNotPresent: false
     }));
-  const {data: [], secs: v282, time: v281, didSend: v23, from: v280 } = txn1;
+  const {data: [], secs: v288, time: v287, didSend: v23, from: v286 } = txn1;
   ;
   const txn2 = await (ctc.recv({
     didSend: false,
     evt_cnt: 1,
     funcNum: 1,
-    out_tys: [ctc4],
+    out_tys: [ctc3],
     timeoutAt: undefined /* mto */,
     waitIfNotPresent: false
     }));
-  const {data: [v309], secs: v311, time: v310, didSend: v55, from: v308 } = txn2;
+  const {data: [v315], secs: v317, time: v316, didSend: v55, from: v314 } = txn2;
   ;
-  const v312 = stdlib.addressEq(v280, v308);
-  stdlib.assert(v312, {
+  const v318 = stdlib.addressEq(v286, v314);
+  stdlib.assert(v318, {
     at: './index.rsh:108:11:dot',
     fs: [],
     msg: 'sender correct',
     who: 'Ctpy'
     });
-  const v313 = v309.acceptedStatus;
-  const v314 = v309.defaultStatus;
-  const v315 = v309.principalTimeoutLimit;
-  const v316 = v309.interestTimeoutLimit;
-  const v317 = v309.token_Owner_borrow_Ctpy_lend;
-  const v318 = v309.token_Owner_lend_Ctpy_borrow;
-  const v319 = v309.termToMaturity;
-  const v320 = v309.pmtFrequency;
-  const v321 = v309.totalNumPmts;
-  const v322 = v309.prevPmt;
-  const v323 = v309.nextPmt;
-  const v324 = v309.contractAddress;
-  const v325 = v309.ownerAddress;
-  const v326 = v309.ctpyAddress;
-  const v327 = v309.principalAmtOwner;
-  const v328 = v309.spotExchangeRate;
-  const v329 = v309.principalAmtCtpy;
-  const v330 = v309.swapRateOwnerPay;
-  const v331 = v309.swapRateCtpyPay;
-  const v332 = v309.lockPrincipal;
-  const v333 = v309.haircut;
-  stdlib.protect(ctc5, await interact.seeState(), {
-    at: './index.rsh:128:26:application',
-    fs: ['at ./index.rsh:127:14:application call to [unknown function] (defined at: ./index.rsh:127:18:function exp)'],
+  const v319 = v315.acceptedStatus;
+  const v320 = v315.defaultStatus;
+  const v321 = v315.principalTimeoutLimit;
+  const v322 = v315.interestTimeoutLimit;
+  const v323 = v315.token_Owner_borrow_Ctpy_lend;
+  const v324 = v315.token_Owner_lend_Ctpy_borrow;
+  const v325 = v315.termToMaturity;
+  const v326 = v315.pmtFrequency;
+  const v327 = v315.totalNumPmts;
+  const v328 = v315.prevPmt;
+  const v329 = v315.nextPmt;
+  const v330 = v315.contractAddress;
+  const v331 = v315.ownerAddress;
+  const v332 = v315.ctpyAddress;
+  const v333 = v315.principalAmtOwner;
+  const v334 = v315.spotExchangeRate;
+  const v335 = v315.principalAmtCtpy;
+  const v336 = v315.swapRateOwnerPay;
+  const v337 = v315.swapRateCtpyPay;
+  const v338 = v315.lockPrincipal;
+  const v339 = v315.haircut;
+  stdlib.protect(ctc4, await interact.seeState(), {
+    at: './index.rsh:125:26:application',
+    fs: ['at ./index.rsh:124:14:application call to [unknown function] (defined at: ./index.rsh:124:18:function exp)'],
     msg: 'seeState',
     who: 'Ctpy'
     });
-  const v339 = stdlib.protect(ctc1, await interact.acceptTrade(), {
-    at: './index.rsh:129:53:application',
-    fs: ['at ./index.rsh:127:14:application call to [unknown function] (defined at: ./index.rsh:127:18:function exp)'],
+  const v345 = stdlib.protect(ctc1, await interact.acceptTrade(), {
+    at: './index.rsh:126:53:application',
+    fs: ['at ./index.rsh:124:14:application call to [unknown function] (defined at: ./index.rsh:124:18:function exp)'],
     msg: 'acceptTrade',
     who: 'Ctpy'
     });
   
   const txn3 = await (ctc.sendrecv({
-    args: [v280, v313, v314, v315, v316, v317, v318, v319, v320, v321, v322, v323, v324, v325, v326, v327, v328, v329, v330, v331, v332, v333, v339, v279],
+    args: [v286, v319, v320, v321, v322, v323, v324, v325, v326, v327, v328, v329, v330, v331, v332, v333, v334, v335, v336, v337, v338, v339, v345, v285],
     evt_cnt: 2,
     funcNum: 2,
-    lct: v310,
+    lct: v316,
     onlyIf: true,
     out_tys: [ctc1, ctc0],
-    pay: [stdlib.checkedBigNumberify('./index.rsh:132:10:decimal', stdlib.UInt_max, '0'), []],
+    pay: [stdlib.checkedBigNumberify('./index.rsh:129:10:decimal', stdlib.UInt_max, '0'), []],
     sim_p: (async (txn3) => {
       const sim_r = { txns: [], mapRefs: [], maps: [] };
       let sim_txn_ctr = stdlib.UInt_max;
       const getSimTokCtr = () => { sim_txn_ctr = sim_txn_ctr.sub(1); return sim_txn_ctr; };
       
       
-      const {data: [v341, v342], secs: v344, time: v343, didSend: v95, from: v340 } = txn3;
+      const {data: [v347, v348], secs: v350, time: v349, didSend: v95, from: v346 } = txn3;
       
       ;
       null;
-      if (v341) {
+      if (v347) {
         
         sim_r.isHalt = false;
         }
       else {
-        const v514 = true;
+        const v522 = true;
         null;
         sim_r.txns.push({
           kind: 'halt',
@@ -381,16 +381,16 @@ export async function Ctpy(ctcTop, interact) {
       }),
     soloSend: true,
     timeoutAt: undefined /* mto */,
-    tys: [ctc0, ctc1, ctc1, ctc2, ctc2, ctc3, ctc3, ctc2, ctc2, ctc2, ctc2, ctc2, ctc0, ctc0, ctc0, ctc2, ctc2, ctc2, ctc2, ctc2, ctc1, ctc2, ctc1, ctc0],
+    tys: [ctc0, ctc1, ctc1, ctc2, ctc2, ctc2, ctc2, ctc2, ctc2, ctc2, ctc2, ctc2, ctc0, ctc0, ctc0, ctc2, ctc2, ctc2, ctc2, ctc2, ctc1, ctc2, ctc1, ctc0],
     waitIfNotPresent: false
     }));
-  const {data: [v341, v342], secs: v344, time: v343, didSend: v95, from: v340 } = txn3;
+  const {data: [v347, v348], secs: v350, time: v349, didSend: v95, from: v346 } = txn3;
   ;
   null;
-  if (v341) {
-    stdlib.protect(ctc5, await interact.seeState(), {
-      at: './index.rsh:143:30:application',
-      fs: ['at ./index.rsh:142:13:application call to [unknown function] (defined at: ./index.rsh:142:31:function exp)'],
+  if (v347) {
+    stdlib.protect(ctc4, await interact.seeState(), {
+      at: './index.rsh:140:30:application',
+      fs: ['at ./index.rsh:139:13:application call to [unknown function] (defined at: ./index.rsh:139:31:function exp)'],
       msg: 'seeState',
       who: 'Ctpy'
       });
@@ -399,15 +399,15 @@ export async function Ctpy(ctcTop, interact) {
       didSend: false,
       evt_cnt: 5,
       funcNum: 3,
-      out_tys: [ctc3, ctc2, ctc3, ctc2, ctc2],
+      out_tys: [ctc5, ctc2, ctc5, ctc2, ctc2],
       timeoutAt: undefined /* mto */,
       waitIfNotPresent: false
       }));
-    const {data: [v387, v388, v389, v390, v391], secs: v393, time: v392, didSend: v152, from: v386 } = txn4;
-    const v394 = stdlib.tokenEq(v387, v389);
-    const v395 = v394 ? false : true;
-    stdlib.assert(v395, {
-      at: './index.rsh:152:15:dot',
+    const {data: [v393, v394, v395, v396, v397], secs: v399, time: v398, didSend: v152, from: v392 } = txn4;
+    const v400 = stdlib.tokenEq(v393, v395);
+    const v401 = v400 ? false : true;
+    stdlib.assert(v401, {
+      at: './index.rsh:149:15:dot',
       fs: [],
       msg: 'non-network tokens distinct',
       who: 'Ctpy'
@@ -415,9 +415,9 @@ export async function Ctpy(ctcTop, interact) {
     ;
     ;
     ;
-    const v410 = stdlib.addressEq(v280, v386);
-    stdlib.assert(v410, {
-      at: './index.rsh:152:15:dot',
+    const v416 = stdlib.addressEq(v286, v392);
+    stdlib.assert(v416, {
+      at: './index.rsh:149:15:dot',
       fs: [],
       msg: 'sender correct',
       who: 'Ctpy'
@@ -430,65 +430,65 @@ export async function Ctpy(ctcTop, interact) {
       timeoutAt: undefined /* mto */,
       waitIfNotPresent: false
       }));
-    const {data: [], secs: v413, time: v412, didSend: v159, from: v411 } = txn5;
+    const {data: [], secs: v419, time: v418, didSend: v159, from: v417 } = txn5;
     ;
     ;
-    const v423 = stdlib.addressEq(v280, v411);
-    stdlib.assert(v423, {
-      at: './index.rsh:154:15:dot',
+    const v429 = stdlib.addressEq(v286, v417);
+    stdlib.assert(v429, {
+      at: './index.rsh:151:15:dot',
       fs: [],
       msg: 'sender correct',
       who: 'Ctpy'
       });
-    const v430 = stdlib.add(v412, v391);
-    const v434 = stdlib.protect(ctc1, await interact.accSwap(v387, v388, v389, v390, v391), {
-      at: './index.rsh:158:54:application',
-      fs: ['at ./index.rsh:157:18:application call to [unknown function] (defined at: ./index.rsh:157:22:function exp)'],
+    const v436 = stdlib.add(v418, v397);
+    const v440 = stdlib.protect(ctc1, await interact.accSwap(v393, v394, v395, v396, v397), {
+      at: './index.rsh:155:54:application',
+      fs: ['at ./index.rsh:154:18:application call to [unknown function] (defined at: ./index.rsh:154:22:function exp)'],
       msg: 'accSwap',
       who: 'Ctpy'
       });
     
     const txn6 = await (ctc.sendrecv({
-      args: [v280, v314, v315, v316, v317, v318, v319, v320, v321, v322, v323, v324, v325, v327, v328, v329, v330, v331, v332, v333, v340, v342, v387, v388, v389, v390, v430],
+      args: [v286, v320, v321, v322, v323, v324, v325, v326, v327, v328, v329, v330, v331, v333, v334, v335, v336, v337, v338, v339, v346, v348, v393, v394, v395, v396, v436],
       evt_cnt: 0,
       funcNum: 5,
-      lct: v412,
-      onlyIf: v434,
+      lct: v418,
+      onlyIf: v440,
       out_tys: [],
-      pay: [stdlib.checkedBigNumberify('./index.rsh:159:14:dot', stdlib.UInt_max, '0'), [[v390, v389]]],
+      pay: [stdlib.checkedBigNumberify('./index.rsh:156:14:dot', stdlib.UInt_max, '0'), [[v396, v395]]],
       sim_p: (async (txn6) => {
         const sim_r = { txns: [], mapRefs: [], maps: [] };
         let sim_txn_ctr = stdlib.UInt_max;
         const getSimTokCtr = () => { sim_txn_ctr = sim_txn_ctr.sub(1); return sim_txn_ctr; };
         
         
-        const {data: [], secs: v437, time: v436, didSend: v170, from: v435 } = txn6;
+        const {data: [], secs: v443, time: v442, didSend: v170, from: v441 } = txn6;
         
         ;
         sim_r.txns.push({
-          amt: v390,
+          amt: v396,
           kind: 'to',
-          tok: v389
+          tok: v395
           });
         sim_r.txns.push({
-          amt: v390,
+          amt: v396,
           kind: 'from',
-          to: v280,
-          tok: v389
+          to: v286,
+          tok: v395
           });
         sim_r.txns.push({
-          amt: v388,
+          amt: v394,
           kind: 'from',
-          to: v340,
-          tok: v387
+          to: v346,
+          tok: v393
           });
         sim_r.isHalt = false;
         
         return sim_r;
         }),
       soloSend: true,
-      timeoutAt: ['time', v430],
-      tys: [ctc0, ctc1, ctc2, ctc2, ctc3, ctc3, ctc2, ctc2, ctc2, ctc2, ctc2, ctc0, ctc0, ctc2, ctc2, ctc2, ctc2, ctc2, ctc1, ctc2, ctc0, ctc0, ctc3, ctc2, ctc3, ctc2, ctc2],
+      timeoutAt: ['time', v436],
+      tys: [ctc0, ctc1, ctc2, ctc2, ctc2, ctc2, ctc2, ctc2, ctc2, ctc2, ctc2, ctc0, ctc0, ctc2, ctc2, ctc2, ctc2, ctc2, ctc1, ctc2, ctc0, ctc0, ctc5, ctc2, ctc5, ctc2, ctc2],
       waitIfNotPresent: false
       }));
     if (txn6.didTimeout) {
@@ -500,42 +500,49 @@ export async function Ctpy(ctcTop, interact) {
         timeoutAt: undefined /* mto */,
         waitIfNotPresent: false
         }));
-      const {data: [], secs: v487, time: v486, didSend: v195, from: v485 } = txn7;
+      const {data: [], secs: v493, time: v492, didSend: v195, from: v491 } = txn7;
       ;
-      const v488 = stdlib.addressEq(v280, v485);
-      stdlib.assert(v488, {
-        at: './index.rsh:162:21:dot',
+      const v494 = stdlib.addressEq(v286, v491);
+      stdlib.assert(v494, {
+        at: './index.rsh:159:21:dot',
         fs: [],
         msg: 'sender correct',
         who: 'Ctpy'
         });
       ;
+      stdlib.protect(ctc4, await interact.seeTimeout(), {
+        at: './index.rsh:161:60:application',
+        fs: ['at ./index.rsh:161:19:application call to [unknown function] (defined at: ./index.rsh:161:38:function exp)'],
+        msg: 'seeTimeout',
+        who: 'Ctpy'
+        });
+      
       const txn8 = await (ctc.sendrecv({
-        args: [v314, v315, v316, v317, v318, v319, v320, v321, v322, v323, v324, v325, v327, v328, v329, v330, v331, v332, v333, v340, v342, v387, v389],
+        args: [v320, v321, v322, v323, v324, v325, v326, v327, v328, v329, v330, v331, v333, v334, v335, v336, v337, v338, v339, v346, v348, v393, v395],
         evt_cnt: 0,
         funcNum: 7,
-        lct: v486,
+        lct: v492,
         onlyIf: true,
         out_tys: [],
-        pay: [stdlib.checkedBigNumberify('./index.rsh:182:10:decimal', stdlib.UInt_max, '0'), []],
+        pay: [stdlib.checkedBigNumberify('./index.rsh:179:10:decimal', stdlib.UInt_max, '0'), []],
         sim_p: (async (txn8) => {
           const sim_r = { txns: [], mapRefs: [], maps: [] };
           let sim_txn_ctr = stdlib.UInt_max;
           const getSimTokCtr = () => { sim_txn_ctr = sim_txn_ctr.sub(1); return sim_txn_ctr; };
           
           
-          const {data: [], secs: v503, time: v502, didSend: v207, from: v501 } = txn8;
+          const {data: [], secs: v511, time: v510, didSend: v213, from: v509 } = txn8;
           
           ;
-          const v505 = true;
+          const v513 = true;
           null;
           sim_r.txns.push({
             kind: 'halt',
-            tok: v389
+            tok: v395
             })
           sim_r.txns.push({
             kind: 'halt',
-            tok: v387
+            tok: v393
             })
           sim_r.txns.push({
             kind: 'halt',
@@ -547,19 +554,19 @@ export async function Ctpy(ctcTop, interact) {
           }),
         soloSend: true,
         timeoutAt: undefined /* mto */,
-        tys: [ctc1, ctc2, ctc2, ctc3, ctc3, ctc2, ctc2, ctc2, ctc2, ctc2, ctc0, ctc0, ctc2, ctc2, ctc2, ctc2, ctc2, ctc1, ctc2, ctc0, ctc0, ctc3, ctc3],
+        tys: [ctc1, ctc2, ctc2, ctc2, ctc2, ctc2, ctc2, ctc2, ctc2, ctc2, ctc0, ctc0, ctc2, ctc2, ctc2, ctc2, ctc2, ctc1, ctc2, ctc0, ctc0, ctc5, ctc5],
         waitIfNotPresent: false
         }));
-      const {data: [], secs: v503, time: v502, didSend: v207, from: v501 } = txn8;
+      const {data: [], secs: v511, time: v510, didSend: v213, from: v509 } = txn8;
       ;
-      const v504 = stdlib.addressEq(v340, v501);
-      stdlib.assert(v504, {
-        at: './index.rsh:182:10:dot',
+      const v512 = stdlib.addressEq(v346, v509);
+      stdlib.assert(v512, {
+        at: './index.rsh:179:10:dot',
         fs: [],
         msg: 'sender correct',
         who: 'Ctpy'
         });
-      const v505 = true;
+      const v513 = true;
       null;
       return;
       
@@ -567,12 +574,12 @@ export async function Ctpy(ctcTop, interact) {
       
       }
     else {
-      const {data: [], secs: v437, time: v436, didSend: v170, from: v435 } = txn6;
+      const {data: [], secs: v443, time: v442, didSend: v170, from: v441 } = txn6;
       ;
       ;
-      const v447 = stdlib.addressEq(v340, v435);
-      stdlib.assert(v447, {
-        at: './index.rsh:159:14:dot',
+      const v453 = stdlib.addressEq(v346, v441);
+      stdlib.assert(v453, {
+        at: './index.rsh:156:14:dot',
         fs: [],
         msg: 'sender correct',
         who: 'Ctpy'
@@ -580,31 +587,31 @@ export async function Ctpy(ctcTop, interact) {
       ;
       ;
       const txn7 = await (ctc.sendrecv({
-        args: [v314, v315, v316, v317, v318, v319, v320, v321, v322, v323, v324, v325, v327, v328, v329, v330, v331, v332, v333, v340, v342, v387, v389],
+        args: [v320, v321, v322, v323, v324, v325, v326, v327, v328, v329, v330, v331, v333, v334, v335, v336, v337, v338, v339, v346, v348, v393, v395],
         evt_cnt: 0,
         funcNum: 8,
-        lct: v436,
+        lct: v442,
         onlyIf: true,
         out_tys: [],
-        pay: [stdlib.checkedBigNumberify('./index.rsh:182:10:decimal', stdlib.UInt_max, '0'), []],
+        pay: [stdlib.checkedBigNumberify('./index.rsh:179:10:decimal', stdlib.UInt_max, '0'), []],
         sim_p: (async (txn7) => {
           const sim_r = { txns: [], mapRefs: [], maps: [] };
           let sim_txn_ctr = stdlib.UInt_max;
           const getSimTokCtr = () => { sim_txn_ctr = sim_txn_ctr.sub(1); return sim_txn_ctr; };
           
           
-          const {data: [], secs: v474, time: v473, didSend: v207, from: v472 } = txn7;
+          const {data: [], secs: v480, time: v479, didSend: v213, from: v478 } = txn7;
           
           ;
-          const v476 = true;
+          const v482 = true;
           null;
           sim_r.txns.push({
             kind: 'halt',
-            tok: v389
+            tok: v395
             })
           sim_r.txns.push({
             kind: 'halt',
-            tok: v387
+            tok: v393
             })
           sim_r.txns.push({
             kind: 'halt',
@@ -616,19 +623,19 @@ export async function Ctpy(ctcTop, interact) {
           }),
         soloSend: true,
         timeoutAt: undefined /* mto */,
-        tys: [ctc1, ctc2, ctc2, ctc3, ctc3, ctc2, ctc2, ctc2, ctc2, ctc2, ctc0, ctc0, ctc2, ctc2, ctc2, ctc2, ctc2, ctc1, ctc2, ctc0, ctc0, ctc3, ctc3],
+        tys: [ctc1, ctc2, ctc2, ctc2, ctc2, ctc2, ctc2, ctc2, ctc2, ctc2, ctc0, ctc0, ctc2, ctc2, ctc2, ctc2, ctc2, ctc1, ctc2, ctc0, ctc0, ctc5, ctc5],
         waitIfNotPresent: false
         }));
-      const {data: [], secs: v474, time: v473, didSend: v207, from: v472 } = txn7;
+      const {data: [], secs: v480, time: v479, didSend: v213, from: v478 } = txn7;
       ;
-      const v475 = stdlib.addressEq(v340, v472);
-      stdlib.assert(v475, {
-        at: './index.rsh:182:10:dot',
+      const v481 = stdlib.addressEq(v346, v478);
+      stdlib.assert(v481, {
+        at: './index.rsh:179:10:dot',
         fs: [],
         msg: 'sender correct',
         who: 'Ctpy'
         });
-      const v476 = true;
+      const v482 = true;
       null;
       return;
       
@@ -641,7 +648,7 @@ export async function Ctpy(ctcTop, interact) {
     
     }
   else {
-    const v514 = true;
+    const v522 = true;
     null;
     return;
     }
@@ -661,8 +668,7 @@ export async function Owner(ctcTop, interact) {
   const ctc0 = stdlib.T_Bool;
   const ctc1 = stdlib.T_Address;
   const ctc2 = stdlib.T_UInt;
-  const ctc3 = stdlib.T_Token;
-  const ctc4 = stdlib.T_Object({
+  const ctc3 = stdlib.T_Object({
     acceptedStatus: ctc0,
     contractAddress: ctc1,
     ctpyAddress: ctc1,
@@ -681,12 +687,13 @@ export async function Owner(ctcTop, interact) {
     swapRateCtpyPay: ctc2,
     swapRateOwnerPay: ctc2,
     termToMaturity: ctc2,
-    token_Owner_borrow_Ctpy_lend: ctc3,
-    token_Owner_lend_Ctpy_borrow: ctc3,
+    token_Owner_borrow_Ctpy_lend: ctc2,
+    token_Owner_lend_Ctpy_borrow: ctc2,
     totalNumPmts: ctc2
     });
-  const ctc5 = stdlib.T_Null;
-  const ctc6 = stdlib.T_Tuple([ctc3, ctc2, ctc3, ctc2, ctc2]);
+  const ctc4 = stdlib.T_Null;
+  const ctc5 = stdlib.T_Token;
+  const ctc6 = stdlib.T_Tuple([ctc5, ctc2, ctc5, ctc2, ctc2]);
   
   
   const txn1 = await (ctc.sendrecv({
@@ -703,10 +710,10 @@ export async function Owner(ctcTop, interact) {
       const getSimTokCtr = () => { sim_txn_ctr = sim_txn_ctr.sub(1); return sim_txn_ctr; };
       
       
-      const {data: [], secs: v282, time: v281, didSend: v23, from: v280 } = txn1;
+      const {data: [], secs: v288, time: v287, didSend: v23, from: v286 } = txn1;
       
       ;
-      const v283 = await ctc.getContractAddress();
+      const v289 = await ctc.getContractAddress();
       sim_r.isHalt = false;
       
       return sim_r;
@@ -716,10 +723,10 @@ export async function Owner(ctcTop, interact) {
     tys: [],
     waitIfNotPresent: false
     }));
-  const {data: [], secs: v282, time: v281, didSend: v23, from: v280 } = txn1;
+  const {data: [], secs: v288, time: v287, didSend: v23, from: v286 } = txn1;
   ;
-  const v283 = await ctc.getContractAddress();
-  const v286 = stdlib.protect(ctc4, await interact.setInitTerms(v283), {
+  const v289 = await ctc.getContractAddress();
+  const v292 = stdlib.protect(ctc3, await interact.setInitTerms(v289), {
     at: './index.rsh:106:59:application',
     fs: ['at ./index.rsh:105:15:application call to [unknown function] (defined at: ./index.rsh:105:19:function exp)'],
     msg: 'setInitTerms',
@@ -727,12 +734,12 @@ export async function Owner(ctcTop, interact) {
     });
   
   const txn2 = await (ctc.sendrecv({
-    args: [v280, v286],
+    args: [v286, v292],
     evt_cnt: 1,
     funcNum: 1,
-    lct: v281,
+    lct: v287,
     onlyIf: true,
-    out_tys: [ctc4],
+    out_tys: [ctc3],
     pay: [stdlib.checkedBigNumberify('./index.rsh:108:11:decimal', stdlib.UInt_max, '0'), []],
     sim_p: (async (txn2) => {
       const sim_r = { txns: [], mapRefs: [], maps: [] };
@@ -740,79 +747,79 @@ export async function Owner(ctcTop, interact) {
       const getSimTokCtr = () => { sim_txn_ctr = sim_txn_ctr.sub(1); return sim_txn_ctr; };
       
       
-      const {data: [v309], secs: v311, time: v310, didSend: v55, from: v308 } = txn2;
+      const {data: [v315], secs: v317, time: v316, didSend: v55, from: v314 } = txn2;
       
       ;
-      const v313 = v309.acceptedStatus;
-      const v314 = v309.defaultStatus;
-      const v315 = v309.principalTimeoutLimit;
-      const v316 = v309.interestTimeoutLimit;
-      const v317 = v309.token_Owner_borrow_Ctpy_lend;
-      const v318 = v309.token_Owner_lend_Ctpy_borrow;
-      const v319 = v309.termToMaturity;
-      const v320 = v309.pmtFrequency;
-      const v321 = v309.totalNumPmts;
-      const v322 = v309.prevPmt;
-      const v323 = v309.nextPmt;
-      const v324 = v309.contractAddress;
-      const v325 = v309.ownerAddress;
-      const v326 = v309.ctpyAddress;
-      const v327 = v309.principalAmtOwner;
-      const v328 = v309.spotExchangeRate;
-      const v329 = v309.principalAmtCtpy;
-      const v330 = v309.swapRateOwnerPay;
-      const v331 = v309.swapRateCtpyPay;
-      const v332 = v309.lockPrincipal;
-      const v333 = v309.haircut;
+      const v319 = v315.acceptedStatus;
+      const v320 = v315.defaultStatus;
+      const v321 = v315.principalTimeoutLimit;
+      const v322 = v315.interestTimeoutLimit;
+      const v323 = v315.token_Owner_borrow_Ctpy_lend;
+      const v324 = v315.token_Owner_lend_Ctpy_borrow;
+      const v325 = v315.termToMaturity;
+      const v326 = v315.pmtFrequency;
+      const v327 = v315.totalNumPmts;
+      const v328 = v315.prevPmt;
+      const v329 = v315.nextPmt;
+      const v330 = v315.contractAddress;
+      const v331 = v315.ownerAddress;
+      const v332 = v315.ctpyAddress;
+      const v333 = v315.principalAmtOwner;
+      const v334 = v315.spotExchangeRate;
+      const v335 = v315.principalAmtCtpy;
+      const v336 = v315.swapRateOwnerPay;
+      const v337 = v315.swapRateCtpyPay;
+      const v338 = v315.lockPrincipal;
+      const v339 = v315.haircut;
       sim_r.isHalt = false;
       
       return sim_r;
       }),
     soloSend: true,
     timeoutAt: undefined /* mto */,
-    tys: [ctc1, ctc4],
+    tys: [ctc1, ctc3],
     waitIfNotPresent: false
     }));
-  const {data: [v309], secs: v311, time: v310, didSend: v55, from: v308 } = txn2;
+  const {data: [v315], secs: v317, time: v316, didSend: v55, from: v314 } = txn2;
   ;
-  const v312 = stdlib.addressEq(v280, v308);
-  stdlib.assert(v312, {
+  const v318 = stdlib.addressEq(v286, v314);
+  stdlib.assert(v318, {
     at: './index.rsh:108:11:dot',
     fs: [],
     msg: 'sender correct',
     who: 'Owner'
     });
-  const v313 = v309.acceptedStatus;
-  const v314 = v309.defaultStatus;
-  const v315 = v309.principalTimeoutLimit;
-  const v316 = v309.interestTimeoutLimit;
-  const v317 = v309.token_Owner_borrow_Ctpy_lend;
-  const v318 = v309.token_Owner_lend_Ctpy_borrow;
-  const v319 = v309.termToMaturity;
-  const v320 = v309.pmtFrequency;
-  const v321 = v309.totalNumPmts;
-  const v322 = v309.prevPmt;
-  const v323 = v309.nextPmt;
-  const v324 = v309.contractAddress;
-  const v325 = v309.ownerAddress;
-  const v326 = v309.ctpyAddress;
-  const v327 = v309.principalAmtOwner;
-  const v328 = v309.spotExchangeRate;
-  const v329 = v309.principalAmtCtpy;
-  const v330 = v309.swapRateOwnerPay;
-  const v331 = v309.swapRateCtpyPay;
-  const v332 = v309.lockPrincipal;
-  const v333 = v309.haircut;
-  stdlib.protect(ctc5, await interact.seeState(), {
-    at: './index.rsh:119:28:application',
-    fs: ['at ./index.rsh:119:28:application call to [unknown function] (defined at: ./index.rsh:119:28:function exp)', 'at ./index.rsh:119:28:application call to "liftedInteract" (defined at: ./index.rsh:119:28:application)'],
+  const v319 = v315.acceptedStatus;
+  const v320 = v315.defaultStatus;
+  const v321 = v315.principalTimeoutLimit;
+  const v322 = v315.interestTimeoutLimit;
+  const v323 = v315.token_Owner_borrow_Ctpy_lend;
+  const v324 = v315.token_Owner_lend_Ctpy_borrow;
+  const v325 = v315.termToMaturity;
+  const v326 = v315.pmtFrequency;
+  const v327 = v315.totalNumPmts;
+  const v328 = v315.prevPmt;
+  const v329 = v315.nextPmt;
+  const v330 = v315.contractAddress;
+  const v331 = v315.ownerAddress;
+  const v332 = v315.ctpyAddress;
+  const v333 = v315.principalAmtOwner;
+  const v334 = v315.spotExchangeRate;
+  const v335 = v315.principalAmtCtpy;
+  const v336 = v315.swapRateOwnerPay;
+  const v337 = v315.swapRateCtpyPay;
+  const v338 = v315.lockPrincipal;
+  const v339 = v315.haircut;
+  stdlib.protect(ctc4, await interact.seeState(), {
+    at: './index.rsh:118:28:application',
+    fs: ['at ./index.rsh:118:28:application call to [unknown function] (defined at: ./index.rsh:118:28:function exp)', 'at ./index.rsh:118:28:application call to "liftedInteract" (defined at: ./index.rsh:118:28:application)'],
     msg: 'seeState',
     who: 'Owner'
     });
   
-  stdlib.protect(ctc5, await interact.isInitialised(), {
-    at: './index.rsh:122:33:application',
-    fs: ['at ./index.rsh:122:33:application call to [unknown function] (defined at: ./index.rsh:122:33:function exp)', 'at ./index.rsh:122:33:application call to "liftedInteract" (defined at: ./index.rsh:122:33:application)'],
+  stdlib.protect(ctc4, await interact.isInitialised(), {
+    at: './index.rsh:121:33:application',
+    fs: ['at ./index.rsh:121:33:application call to [unknown function] (defined at: ./index.rsh:121:33:function exp)', 'at ./index.rsh:121:33:application call to "liftedInteract" (defined at: ./index.rsh:121:33:application)'],
     msg: 'isInitialised',
     who: 'Owner'
     });
@@ -825,62 +832,62 @@ export async function Owner(ctcTop, interact) {
     timeoutAt: undefined /* mto */,
     waitIfNotPresent: false
     }));
-  const {data: [v341, v342], secs: v344, time: v343, didSend: v95, from: v340 } = txn3;
+  const {data: [v347, v348], secs: v350, time: v349, didSend: v95, from: v346 } = txn3;
   ;
   null;
-  if (v341) {
-    stdlib.protect(ctc5, await interact.seeState(), {
-      at: './index.rsh:143:30:application',
-      fs: ['at ./index.rsh:142:13:application call to [unknown function] (defined at: ./index.rsh:142:31:function exp)'],
+  if (v347) {
+    stdlib.protect(ctc4, await interact.seeState(), {
+      at: './index.rsh:140:30:application',
+      fs: ['at ./index.rsh:139:13:application call to [unknown function] (defined at: ./index.rsh:139:31:function exp)'],
       msg: 'seeState',
       who: 'Owner'
       });
     
-    const v373 = stdlib.protect(ctc6, await interact.getSwap(), {
-      at: './index.rsh:150:93:application',
-      fs: ['at ./index.rsh:149:19:application call to [unknown function] (defined at: ./index.rsh:149:23:function exp)'],
+    const v379 = stdlib.protect(ctc6, await interact.getSwap(), {
+      at: './index.rsh:147:93:application',
+      fs: ['at ./index.rsh:146:19:application call to [unknown function] (defined at: ./index.rsh:146:23:function exp)'],
       msg: 'getSwap',
       who: 'Owner'
       });
-    const v374 = v373[stdlib.checkedBigNumberify('./index.rsh:150:93:application', stdlib.UInt_max, '0')];
-    const v375 = v373[stdlib.checkedBigNumberify('./index.rsh:150:93:application', stdlib.UInt_max, '1')];
-    const v376 = v373[stdlib.checkedBigNumberify('./index.rsh:150:93:application', stdlib.UInt_max, '2')];
-    const v377 = v373[stdlib.checkedBigNumberify('./index.rsh:150:93:application', stdlib.UInt_max, '3')];
-    const v378 = v373[stdlib.checkedBigNumberify('./index.rsh:150:93:application', stdlib.UInt_max, '4')];
-    const v384 = stdlib.tokenEq(v374, v376);
-    const v385 = v384 ? false : true;
-    stdlib.assert(v385, {
-      at: './index.rsh:151:19:application',
-      fs: ['at ./index.rsh:149:19:application call to [unknown function] (defined at: ./index.rsh:149:23:function exp)'],
+    const v380 = v379[stdlib.checkedBigNumberify('./index.rsh:147:93:application', stdlib.UInt_max, '0')];
+    const v381 = v379[stdlib.checkedBigNumberify('./index.rsh:147:93:application', stdlib.UInt_max, '1')];
+    const v382 = v379[stdlib.checkedBigNumberify('./index.rsh:147:93:application', stdlib.UInt_max, '2')];
+    const v383 = v379[stdlib.checkedBigNumberify('./index.rsh:147:93:application', stdlib.UInt_max, '3')];
+    const v384 = v379[stdlib.checkedBigNumberify('./index.rsh:147:93:application', stdlib.UInt_max, '4')];
+    const v390 = stdlib.tokenEq(v380, v382);
+    const v391 = v390 ? false : true;
+    stdlib.assert(v391, {
+      at: './index.rsh:148:19:application',
+      fs: ['at ./index.rsh:146:19:application call to [unknown function] (defined at: ./index.rsh:146:23:function exp)'],
       msg: null,
       who: 'Owner'
       });
     
     const txn4 = await (ctc.sendrecv({
-      args: [v280, v314, v315, v316, v317, v318, v319, v320, v321, v322, v323, v324, v325, v327, v328, v329, v330, v331, v332, v333, v340, v342, v374, v375, v376, v377, v378],
+      args: [v286, v320, v321, v322, v323, v324, v325, v326, v327, v328, v329, v330, v331, v333, v334, v335, v336, v337, v338, v339, v346, v348, v380, v381, v382, v383, v384],
       evt_cnt: 5,
       funcNum: 3,
-      lct: v343,
+      lct: v349,
       onlyIf: true,
-      out_tys: [ctc3, ctc2, ctc3, ctc2, ctc2],
-      pay: [stdlib.checkedBigNumberify('./index.rsh:152:15:decimal', stdlib.UInt_max, '0'), []],
+      out_tys: [ctc5, ctc2, ctc5, ctc2, ctc2],
+      pay: [stdlib.checkedBigNumberify('./index.rsh:149:15:decimal', stdlib.UInt_max, '0'), []],
       sim_p: (async (txn4) => {
         const sim_r = { txns: [], mapRefs: [], maps: [] };
         let sim_txn_ctr = stdlib.UInt_max;
         const getSimTokCtr = () => { sim_txn_ctr = sim_txn_ctr.sub(1); return sim_txn_ctr; };
         
         
-        const {data: [v387, v388, v389, v390, v391], secs: v393, time: v392, didSend: v152, from: v386 } = txn4;
+        const {data: [v393, v394, v395, v396, v397], secs: v399, time: v398, didSend: v152, from: v392 } = txn4;
         
         sim_r.txns.push({
           amt: stdlib.checkedBigNumberify('<builtin>', stdlib.UInt_max, '0'),
           kind: 'init',
-          tok: v387
+          tok: v393
           });
         sim_r.txns.push({
           amt: stdlib.checkedBigNumberify('<builtin>', stdlib.UInt_max, '0'),
           kind: 'init',
-          tok: v389
+          tok: v395
           });
         ;
         sim_r.isHalt = false;
@@ -889,14 +896,14 @@ export async function Owner(ctcTop, interact) {
         }),
       soloSend: true,
       timeoutAt: undefined /* mto */,
-      tys: [ctc1, ctc0, ctc2, ctc2, ctc3, ctc3, ctc2, ctc2, ctc2, ctc2, ctc2, ctc1, ctc1, ctc2, ctc2, ctc2, ctc2, ctc2, ctc0, ctc2, ctc1, ctc1, ctc3, ctc2, ctc3, ctc2, ctc2],
+      tys: [ctc1, ctc0, ctc2, ctc2, ctc2, ctc2, ctc2, ctc2, ctc2, ctc2, ctc2, ctc1, ctc1, ctc2, ctc2, ctc2, ctc2, ctc2, ctc0, ctc2, ctc1, ctc1, ctc5, ctc2, ctc5, ctc2, ctc2],
       waitIfNotPresent: false
       }));
-    const {data: [v387, v388, v389, v390, v391], secs: v393, time: v392, didSend: v152, from: v386 } = txn4;
-    const v394 = stdlib.tokenEq(v387, v389);
-    const v395 = v394 ? false : true;
-    stdlib.assert(v395, {
-      at: './index.rsh:152:15:dot',
+    const {data: [v393, v394, v395, v396, v397], secs: v399, time: v398, didSend: v152, from: v392 } = txn4;
+    const v400 = stdlib.tokenEq(v393, v395);
+    const v401 = v400 ? false : true;
+    stdlib.assert(v401, {
+      at: './index.rsh:149:15:dot',
       fs: [],
       msg: 'non-network tokens distinct',
       who: 'Owner'
@@ -904,107 +911,115 @@ export async function Owner(ctcTop, interact) {
     ;
     ;
     ;
-    const v410 = stdlib.addressEq(v280, v386);
-    stdlib.assert(v410, {
-      at: './index.rsh:152:15:dot',
+    const v416 = stdlib.addressEq(v286, v392);
+    stdlib.assert(v416, {
+      at: './index.rsh:149:15:dot',
       fs: [],
       msg: 'sender correct',
       who: 'Owner'
       });
     const txn5 = await (ctc.sendrecv({
-      args: [v280, v314, v315, v316, v317, v318, v319, v320, v321, v322, v323, v324, v325, v327, v328, v329, v330, v331, v332, v333, v340, v342, v387, v388, v389, v390, v391],
+      args: [v286, v320, v321, v322, v323, v324, v325, v326, v327, v328, v329, v330, v331, v333, v334, v335, v336, v337, v338, v339, v346, v348, v393, v394, v395, v396, v397],
       evt_cnt: 0,
       funcNum: 4,
-      lct: v392,
+      lct: v398,
       onlyIf: true,
       out_tys: [],
-      pay: [stdlib.checkedBigNumberify('./index.rsh:154:15:dot', stdlib.UInt_max, '0'), [[v388, v387]]],
+      pay: [stdlib.checkedBigNumberify('./index.rsh:151:15:dot', stdlib.UInt_max, '0'), [[v394, v393]]],
       sim_p: (async (txn5) => {
         const sim_r = { txns: [], mapRefs: [], maps: [] };
         let sim_txn_ctr = stdlib.UInt_max;
         const getSimTokCtr = () => { sim_txn_ctr = sim_txn_ctr.sub(1); return sim_txn_ctr; };
         
         
-        const {data: [], secs: v413, time: v412, didSend: v159, from: v411 } = txn5;
+        const {data: [], secs: v419, time: v418, didSend: v159, from: v417 } = txn5;
         
         ;
         sim_r.txns.push({
-          amt: v388,
+          amt: v394,
           kind: 'to',
-          tok: v387
+          tok: v393
           });
-        const v430 = stdlib.add(v412, v391);
+        const v436 = stdlib.add(v418, v397);
         sim_r.isHalt = false;
         
         return sim_r;
         }),
       soloSend: true,
       timeoutAt: undefined /* mto */,
-      tys: [ctc1, ctc0, ctc2, ctc2, ctc3, ctc3, ctc2, ctc2, ctc2, ctc2, ctc2, ctc1, ctc1, ctc2, ctc2, ctc2, ctc2, ctc2, ctc0, ctc2, ctc1, ctc1, ctc3, ctc2, ctc3, ctc2, ctc2],
+      tys: [ctc1, ctc0, ctc2, ctc2, ctc2, ctc2, ctc2, ctc2, ctc2, ctc2, ctc2, ctc1, ctc1, ctc2, ctc2, ctc2, ctc2, ctc2, ctc0, ctc2, ctc1, ctc1, ctc5, ctc2, ctc5, ctc2, ctc2],
       waitIfNotPresent: false
       }));
-    const {data: [], secs: v413, time: v412, didSend: v159, from: v411 } = txn5;
+    const {data: [], secs: v419, time: v418, didSend: v159, from: v417 } = txn5;
     ;
     ;
-    const v423 = stdlib.addressEq(v280, v411);
-    stdlib.assert(v423, {
-      at: './index.rsh:154:15:dot',
+    const v429 = stdlib.addressEq(v286, v417);
+    stdlib.assert(v429, {
+      at: './index.rsh:151:15:dot',
       fs: [],
       msg: 'sender correct',
       who: 'Owner'
       });
-    const v430 = stdlib.add(v412, v391);
+    const v436 = stdlib.add(v418, v397);
     const txn6 = await (ctc.recv({
       didSend: false,
       evt_cnt: 0,
       funcNum: 5,
       out_tys: [],
-      timeoutAt: ['time', v430],
+      timeoutAt: ['time', v436],
       waitIfNotPresent: false
       }));
     if (txn6.didTimeout) {
       const txn7 = await (ctc.sendrecv({
-        args: [v280, v314, v315, v316, v317, v318, v319, v320, v321, v322, v323, v324, v325, v327, v328, v329, v330, v331, v332, v333, v340, v342, v387, v388, v389, v390, v430],
+        args: [v286, v320, v321, v322, v323, v324, v325, v326, v327, v328, v329, v330, v331, v333, v334, v335, v336, v337, v338, v339, v346, v348, v393, v394, v395, v396, v436],
         evt_cnt: 0,
         funcNum: 6,
-        lct: v412,
+        lct: v418,
         onlyIf: true,
         out_tys: [],
-        pay: [stdlib.checkedBigNumberify('./index.rsh:162:21:decimal', stdlib.UInt_max, '0'), []],
+        pay: [stdlib.checkedBigNumberify('./index.rsh:159:21:decimal', stdlib.UInt_max, '0'), []],
         sim_p: (async (txn7) => {
           const sim_r = { txns: [], mapRefs: [], maps: [] };
           let sim_txn_ctr = stdlib.UInt_max;
           const getSimTokCtr = () => { sim_txn_ctr = sim_txn_ctr.sub(1); return sim_txn_ctr; };
           
           
-          const {data: [], secs: v487, time: v486, didSend: v195, from: v485 } = txn7;
+          const {data: [], secs: v493, time: v492, didSend: v195, from: v491 } = txn7;
           
           ;
           sim_r.txns.push({
-            amt: v388,
+            amt: v394,
             kind: 'from',
-            to: v280,
-            tok: v387
+            to: v286,
+            tok: v393
             });
+          
           sim_r.isHalt = false;
           
           return sim_r;
           }),
         soloSend: true,
         timeoutAt: undefined /* mto */,
-        tys: [ctc1, ctc0, ctc2, ctc2, ctc3, ctc3, ctc2, ctc2, ctc2, ctc2, ctc2, ctc1, ctc1, ctc2, ctc2, ctc2, ctc2, ctc2, ctc0, ctc2, ctc1, ctc1, ctc3, ctc2, ctc3, ctc2, ctc2],
+        tys: [ctc1, ctc0, ctc2, ctc2, ctc2, ctc2, ctc2, ctc2, ctc2, ctc2, ctc2, ctc1, ctc1, ctc2, ctc2, ctc2, ctc2, ctc2, ctc0, ctc2, ctc1, ctc1, ctc5, ctc2, ctc5, ctc2, ctc2],
         waitIfNotPresent: false
         }));
-      const {data: [], secs: v487, time: v486, didSend: v195, from: v485 } = txn7;
+      const {data: [], secs: v493, time: v492, didSend: v195, from: v491 } = txn7;
       ;
-      const v488 = stdlib.addressEq(v280, v485);
-      stdlib.assert(v488, {
-        at: './index.rsh:162:21:dot',
+      const v494 = stdlib.addressEq(v286, v491);
+      stdlib.assert(v494, {
+        at: './index.rsh:159:21:dot',
         fs: [],
         msg: 'sender correct',
         who: 'Owner'
         });
       ;
+      stdlib.protect(ctc4, await interact.seeTimeout(), {
+        at: './index.rsh:161:60:application',
+        fs: ['at ./index.rsh:161:19:application call to [unknown function] (defined at: ./index.rsh:161:38:function exp)'],
+        msg: 'seeTimeout',
+        who: 'Owner'
+        });
+      
       const txn8 = await (ctc.recv({
         didSend: false,
         evt_cnt: 0,
@@ -1013,16 +1028,16 @@ export async function Owner(ctcTop, interact) {
         timeoutAt: undefined /* mto */,
         waitIfNotPresent: false
         }));
-      const {data: [], secs: v503, time: v502, didSend: v207, from: v501 } = txn8;
+      const {data: [], secs: v511, time: v510, didSend: v213, from: v509 } = txn8;
       ;
-      const v504 = stdlib.addressEq(v340, v501);
-      stdlib.assert(v504, {
-        at: './index.rsh:182:10:dot',
+      const v512 = stdlib.addressEq(v346, v509);
+      stdlib.assert(v512, {
+        at: './index.rsh:179:10:dot',
         fs: [],
         msg: 'sender correct',
         who: 'Owner'
         });
-      const v505 = true;
+      const v513 = true;
       null;
       return;
       
@@ -1030,12 +1045,12 @@ export async function Owner(ctcTop, interact) {
       
       }
     else {
-      const {data: [], secs: v437, time: v436, didSend: v170, from: v435 } = txn6;
+      const {data: [], secs: v443, time: v442, didSend: v170, from: v441 } = txn6;
       ;
       ;
-      const v447 = stdlib.addressEq(v340, v435);
-      stdlib.assert(v447, {
-        at: './index.rsh:159:14:dot',
+      const v453 = stdlib.addressEq(v346, v441);
+      stdlib.assert(v453, {
+        at: './index.rsh:156:14:dot',
         fs: [],
         msg: 'sender correct',
         who: 'Owner'
@@ -1050,16 +1065,16 @@ export async function Owner(ctcTop, interact) {
         timeoutAt: undefined /* mto */,
         waitIfNotPresent: false
         }));
-      const {data: [], secs: v474, time: v473, didSend: v207, from: v472 } = txn7;
+      const {data: [], secs: v480, time: v479, didSend: v213, from: v478 } = txn7;
       ;
-      const v475 = stdlib.addressEq(v340, v472);
-      stdlib.assert(v475, {
-        at: './index.rsh:182:10:dot',
+      const v481 = stdlib.addressEq(v346, v478);
+      stdlib.assert(v481, {
+        at: './index.rsh:179:10:dot',
         fs: [],
         msg: 'sender correct',
         who: 'Owner'
         });
-      const v476 = true;
+      const v482 = true;
       null;
       return;
       
@@ -1072,7 +1087,7 @@ export async function Owner(ctcTop, interact) {
     
     }
   else {
-    const v514 = true;
+    const v522 = true;
     null;
     return;
     }
@@ -1108,55 +1123,55 @@ export const _stateSourceMap = {
     who: 'Module'
     },
   2: {
-    at: './index.rsh:116:13:after expr stmt semicolon',
+    at: './index.rsh:115:13:after expr stmt semicolon',
     fs: [],
     msg: null,
     who: 'Module'
     },
   3: {
-    at: './index.rsh:145:17:after expr stmt semicolon',
+    at: './index.rsh:142:17:after expr stmt semicolon',
     fs: [],
     msg: null,
     who: 'Module'
     },
   4: {
-    at: './index.rsh:153:17:after expr stmt semicolon',
+    at: './index.rsh:150:17:after expr stmt semicolon',
     fs: [],
     msg: null,
     who: 'Module'
     },
   5: {
-    at: './index.rsh:155:17:after expr stmt semicolon',
+    at: './index.rsh:152:17:after expr stmt semicolon',
     fs: [],
     msg: null,
     who: 'Module'
     },
   6: {
-    at: './index.rsh:166:23:after expr stmt semicolon',
+    at: './index.rsh:163:23:after expr stmt semicolon',
     fs: [],
     msg: null,
     who: 'Module'
     },
   7: {
-    at: './index.rsh:188:13:after expr stmt semicolon',
+    at: './index.rsh:185:13:after expr stmt semicolon',
     fs: [],
     msg: null,
     who: 'Module'
     },
   8: {
-    at: './index.rsh:173:17:after expr stmt semicolon',
+    at: './index.rsh:170:17:after expr stmt semicolon',
     fs: [],
     msg: null,
     who: 'Module'
     },
   9: {
-    at: './index.rsh:188:13:after expr stmt semicolon',
+    at: './index.rsh:185:13:after expr stmt semicolon',
     fs: [],
     msg: null,
     who: 'Module'
     },
   10: {
-    at: './index.rsh:178:17:after expr stmt semicolon',
+    at: './index.rsh:175:17:after expr stmt semicolon',
     fs: [],
     msg: null,
     who: 'Module'
