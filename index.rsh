@@ -138,15 +138,21 @@ export const main = Reach.App(() => {
     // comment?
     if (resp) {
         commit();
-        testTokenCreator.publish();
+        testTokenCreator.only(() =>{
+            const tokenOBCL = initTerms.token_Owner_borrow_Ctpy_lend;
+            const tokenOLCB = initTerms.token_Owner_lend_Ctpy_borrow;
+            check(tokenOBCL != tokenOLCB); });
+        testTokenCreator.publish(tokenOBCL, tokenOLCB);
+        require(tokenOBCL != tokenOLCB);
         commit();
         // send non-network tokens to Ctpy from 'creator' account so they can be used in the swaps (owner mints balances in each non-network token in frontend) 
         // for testing purposes only - on Testnet/Mainnet the participants would need sufficient balances in the tokens prior with appropriate ASA ids to the trade
-        testTokenCreator.pay([[50000,initTerms.token_Owner_borrow_Ctpy_lend]]); // essentially send 50k of created wETH tokens to contract
+        testTokenCreator.pay([[50000, tokenOBCL]]); // essentially send 50k of created wETH tokens to contract
         commit();
-        testTokenCreator.pay([[5000,initTerms.token_Owner_lend_Ctpy_borrow]]);  // essentially send 5k of created wBTC tokens to contract
-        transfer(50000, initTerms.token_Owner_borrow_Ctpy_lend).to(Ctpy);
-        transfer(5000, initTerms.token_Owner_lend_Ctpy_borrow).to(Ctpy);
+        testTokenCreator.pay([[5000, tokenOLCB]]);  // essentially send 5k of created wBTC tokens to contract
+        // check contact balance >= transferAmt
+        transfer(50000, tokenOBCL).to(Ctpy);
+        transfer(5000, tokenOLCB).to(Ctpy);
         
         // update trade state view based on ctpy response
         tradeState.read.set(
@@ -156,13 +162,14 @@ export const main = Reach.App(() => {
             interact.seeState();
         });
         commit();
-        // rest of the code... go into while / parallelReduce
+        // rest of the code... go into parallelReduce here
 
         // test atomic single atomic swap first...
         Owner.only(() => {
             const [ tokenOtC, amtOtC, tokenCtO, amtCtO, time ] = declassify(interact.getSwap());    // OtC = Owner to Ctpy, CtO = Ctpy to Owner
-            assume(tokenOtC != tokenCtO); });
-        Owner.publish(tokenOtC, amtOtC, tokenCtO, amtCtO, time);    
+            check(((tokenOtC == tokenOLCB) && (tokenCtO == tokenOBCL)) || ((tokenOtC == tokenOBCL) && (tokenCtO == tokenOLCB))); });
+        Owner.publish(tokenOtC, amtOtC, tokenCtO, amtCtO, time); 
+        require(((tokenOtC == tokenOLCB) && (tokenCtO == tokenOBCL)) || ((tokenOtC == tokenOBCL) && (tokenCtO == tokenOLCB)));   
         commit();   
         Owner.pay([ [amtOtC, tokenOtC] ]);      // what about default by Owner? (I guess you can have a check somewhere that ensures Owner has sufficient balance?...)
         commit();
