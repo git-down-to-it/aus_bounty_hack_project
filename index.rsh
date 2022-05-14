@@ -1,6 +1,6 @@
 'reach 0.1';
 
-// Cross-cryptocurrency swap derivative contract trading DApp
+// Cross-cryptocurrency swap derivative contract trading DApp - smart contract backend
 
 // define common interact 
 const CommonInteract = {
@@ -27,7 +27,7 @@ export const main = Reach.App(() => {
                                              'token_Owner_borrow_Ctpy_lend': Token,
                                              'token_Owner_lend_Ctpy_borrow': Token,
                                              'termToMaturity': UInt,    // in years
-                                             'pmtFrequency': UInt,   // number of payments per year (excluding initial exchange of principal), require >= 1
+                                             'pmtFrequency': UInt,   // number of payments per year (excluding initial exchange of principal), should require >= 1
                                              'totalNumPmts': UInt,  // number of payments over the full term of the swap contract = (termToMaturiy * pmtFrequency) + 1 for initial exchange of principal
                                              'prevPmt': UInt,
                                              'nextPmt': UInt,
@@ -43,6 +43,7 @@ export const main = Reach.App(() => {
                                              'haircut': UInt})), // haircut rate in % applied to principal on defaulting party
         isInitialised: Fun([], Null),    // function that reports back to Owner that the swap derivative contract terms have been set
         getSwap: Fun([], Tuple(Token, UInt, Token, UInt, UInt)),
+        checkBal: Fun([UInt], Null)
     });
 
     // define counterparty participant attaching to the contract
@@ -51,7 +52,10 @@ export const main = Reach.App(() => {
         acceptTrade: Fun([], Bool),   // function that returns true if ctpy accepts the trade
         passAddr: Address,
         accSwap: Fun([Token, UInt, Token, UInt, UInt], Bool),
+        getTokenIds: Fun([Token, Token], Null)  // function only required for ctpy frontend for testing purposes with non-network tokens
     });
+
+    const testTokenCreator = Participant('Creator', {});    // token creator participant only required for testing purposes with non-network tokens
 
     // define announcer object to track and announce key events
     const Announcer = Events('Announcer', {
@@ -122,6 +126,7 @@ export const main = Reach.App(() => {
 
     // first local step by contract Counterparty
     Ctpy.only(() => {
+        interact.getTokenIds(initTerms.token_Owner_borrow_Ctpy_lend, initTerms.token_Owner_lend_Ctpy_borrow); // only required for testing with non-network tokens
         interact.seeState();
         const resp = declassify(interact.acceptTrade());   // the attaching participant has to decide whether they will accept the terms of the trade (as the counterparty)
         const ctpyAddr = declassify(interact.passAddr); // could change this to separate local step so that ctpy doesn't give up their address unless they actually want to accept
@@ -132,6 +137,17 @@ export const main = Reach.App(() => {
 
     // comment?
     if (resp) {
+        commit();
+        testTokenCreator.publish();
+        commit();
+        // send non-network tokens to Ctpy from 'creator' account so they can be used in the swaps (owner mints balances in each non-network token in frontend) 
+        // for testing purposes only - on Testnet/Mainnet the participants would need sufficient balances in the tokens prior with appropriate ASA ids to the trade
+        testTokenCreator.pay([[50000,initTerms.token_Owner_borrow_Ctpy_lend]]); // essentially send 50k of created wETH tokens to contract
+        commit();
+        testTokenCreator.pay([[5000,initTerms.token_Owner_lend_Ctpy_borrow]]);  // essentially send 5k of created wBTC tokens to contract
+        transfer(50000, initTerms.token_Owner_borrow_Ctpy_lend).to(Ctpy);
+        transfer(5000, initTerms.token_Owner_lend_Ctpy_borrow).to(Ctpy);
+        
         // update trade state view based on ctpy response
         tradeState.read.set(
             tradeTerms.fromObject({...initTerms,acceptedStatus:resp,ctpyAddress:ctpyAddr})
@@ -150,7 +166,8 @@ export const main = Reach.App(() => {
         commit();   
         Owner.pay([ [amtOtC, tokenOtC] ]);      // what about default by Owner? (I guess you can have a check somewhere that ensures Owner has sufficient balance?...)
         commit();
-        
+        Owner.interact.checkBal(balance(tokenOtC));
+
         Ctpy.only(() => {
             const bwhen = declassify(interact.accSwap(tokenOtC, amtOtC, tokenCtO, amtCtO, time)); });
         Ctpy.pay([ [amtCtO, tokenCtO] ])
@@ -161,6 +178,7 @@ export const main = Reach.App(() => {
               each([Owner, Ctpy], () => interact.seeTimeout());
               // default event
               commit();
+              Owner.interact.checkBal(balance(tokenOtC));
               //exit();
         });
         transfer(amtCtO, tokenCtO).to(Owner);   // if lockPrincipal == true then could delay this transfer out of the contract escrow until the last payment / cash flow
