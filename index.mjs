@@ -302,15 +302,6 @@ interact.seeTransfer = () => {
     console.log(`\nTransfer was successful!\n`)  // flesh out
 };
 
-/*interact.checkBal = (tok) => {
-    const sym = (tok == process.env.WBTC_ID) ? `wBTC` : `wETH`;
-    if (sym == 'wBTC') {
-        console.log(`Your ${sym} balance is ${get_wBTC_Balance(acc)}`);
-    } else {
-        console.log(`Your ${sym} balance is ${get_wETH_Balance(acc)}`);
-    }
-};*/
-
 const part = isOwner ? ctc.p.Owner : ctc.p.Ctpy;
 await part(interact);
 

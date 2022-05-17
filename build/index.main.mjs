@@ -1,7 +1,7 @@
-// Automatically generated with Reach 0.1.10 (84dc282c)
+// Automatically generated with Reach 0.1.10 (c934aa69)
 /* eslint-disable */
 export const _version = '0.1.10';
-export const _versionHash = '0.1.10 (84dc282c)';
+export const _versionHash = '0.1.10 (c934aa69)';
 export const _backendVersion = 15;
 
 export function getExports(s) {
@@ -651,6 +651,8 @@ export async function Ctpy(ctcTop, interact) {
         const {data: [], secs: v696, time: v695, didSend: v136, from: v694 } = txn6;
         
         ;
+        const v645 = stdlib.addressEq(v587, v642);
+        ;
         sim_r.isHalt = false;
         
         return sim_r;
@@ -1176,6 +1178,9 @@ export async function Owner(ctcTop, interact) {
       
       const {data: [v581, v582, v583], secs: v585, time: v584, didSend: v64, from: v580 } = txn2;
       
+      const v544 = stdlib.tokenEq(v540, v541);
+      const v545 = v544 ? false : true;
+      ;
       sim_r.txns.push({
         amt: stdlib.checkedBigNumberify('<builtin>', stdlib.UInt_max, '0'),
         kind: 'init',
@@ -1577,6 +1582,49 @@ export async function Owner(ctcTop, interact) {
         msg: 'sender correct',
         who: 'Owner'
         });
+      const txn12 = await (ctc.sendrecv({
+        args: [v506, v540, v541, v562, v563, v564, v565, v566, v567, v568, v569, v570, v571, v572, v573, v575, v576, v577, v578, v579, v580, v581, v589],
+        evt_cnt: 0,
+        funcNum: 13,
+        lct: v947,
+        onlyIf: true,
+        out_tys: [],
+        pay: [stdlib.checkedBigNumberify('./index.rsh:259:11:decimal', stdlib.UInt_max, '0'), []],
+        sim_p: (async (txn12) => {
+          const sim_r = { txns: [], mapRefs: [], maps: [] };
+          let sim_txn_ctr = stdlib.UInt_max;
+          const getSimTokCtr = () => { sim_txn_ctr = sim_txn_ctr.sub(1); return sim_txn_ctr; };
+          
+          
+          const {data: [], secs: v952, time: v951, didSend: v259, from: v950 } = txn12;
+          
+          ;
+          const v953 = stdlib.addressEq(v506, v950);
+          ;
+          const v954 = true;
+          null;
+          sim_r.txns.push({
+            kind: 'halt',
+            tok: v541
+            })
+          sim_r.txns.push({
+            kind: 'halt',
+            tok: v540
+            })
+          sim_r.txns.push({
+            kind: 'halt',
+            tok: undefined /* Nothing */
+            })
+          sim_r.isHalt = true;
+          
+          return sim_r;
+          }),
+        soloSend: true,
+        timeoutAt: undefined /* mto */,
+        tys: [ctc1, ctc3, ctc3, ctc0, ctc2, ctc2, ctc3, ctc3, ctc2, ctc2, ctc2, ctc2, ctc2, ctc1, ctc1, ctc2, ctc2, ctc2, ctc2, ctc2, ctc0, ctc2, ctc1],
+        waitIfNotPresent: false
+        }));
+      const {data: [], secs: v952, time: v951, didSend: v259, from: v950 } = txn12;
       ;
       ;
       const txn12 = await (ctc.recv({
@@ -1602,6 +1650,9 @@ export async function Owner(ctcTop, interact) {
         msg: 'seeTransfer',
         who: 'Owner'
         });
+      const v954 = true;
+      null;
+      return;
       
       if (v790) {
         const v1012 = true;
