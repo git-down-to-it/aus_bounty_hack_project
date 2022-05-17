@@ -52,11 +52,11 @@ if (isOwner) {
     ctc.getInfo().then((info) => {
         console.log(`\nThe new trade quote's underlying smart contract has been deployed as = ${JSON.stringify(info)}`); 
     });
-    const accCreator = await stdlib.newTestAccount(startingBalance);
-    const wBTC = await stdlib.launchToken(accCreator, "wBTC", "wBTC"); /* ASA token representing 'wrapped' BTC launched (this is for testing purposes; 
+    // const accCreator = await stdlib.newTestAccount(startingBalance);
+    const wBTC = await stdlib.launchToken(acc, "wBTC", "wBTC"); /* ASA token representing 'wrapped' BTC launched (this is for testing purposes; 
                                                                          we assume that both participants have a holding which is needed for the 
                                                                         cross-cryptocurrency swap contract) */
-    const wETH = await stdlib.launchToken(accCreator, "wETH", "wETH"); /* ASA token representing 'wrapped' ETH launched (this is for testing purposes; 
+    const wETH = await stdlib.launchToken(acc, "wETH", "wETH"); /* ASA token representing 'wrapped' ETH launched (this is for testing purposes; 
                                                                         we assume that both participants have a holding which is needed for the 
                                                                         cross-cryptocurrency swap contract) */
 
@@ -241,7 +241,7 @@ if (isOwner) {
     } 
     return accept;
   };
-  interact.accSwap = async (tokenOtC, amtOtC, tokenCtO, amtCtO, time) => {
+  interact.accSwap = async (pmtNum, amtOtC, amtCtO, time) => {
       // try do a balance check here for Owner to see if any funds have moved
       let currTradeState = await viewTrade.read();
       const payIndex = currTradeState[1].prevPmt;
@@ -251,9 +251,9 @@ if (isOwner) {
             payIndex == (totPayIndex-1) ? `\nSwap payment due. Payment Type: Final exchange of principal and interest\n\n` :
                       /* interest only */ `\nSwap payment due. Payment Type: Exchange of interest\n\n`
       const confirmSwap = await ask.ask(
-        `${msgCtpy}` +
-        `Counterparty pays ${(amtCtO / 1000000)} (${getSym(tokenCtO)}) => Owner\n` +    // need to figure a way to convert back from id to sym
-        `Counterparty receives ${(amtOtC / 1000000)} (${getSym(tokenOtC)}) <= Owner\n` +    // need to figure a way to convert back from id to sym
+        `${msgCtpy} === ${pmtNum}` +
+        `Counterparty pays ${(amtCtO / 1000000)} (wETH) => Owner\n` +    // need to figure a way to convert back from id to sym
+        `Counterparty receives ${(amtOtC / 1000000)} (wETH) <= Owner\n` +    // need to figure a way to convert back from id to sym
         `Timeout limit set to: ${time}\n\n` +
         `Before proceeding ensure sufficient funds are available for payment to the swap within the timeout limit\n` +
         `Enter 'y' to confirm and send funds to the smart contract escrow and settle the swap payment...`,

@@ -51,9 +51,7 @@ export const main = Reach.App(() => {
         passAddr: Address,
         accSwap: Fun([UInt, UInt, UInt, UInt], Bool),
         getTokenIds: Fun([Token, Token], Null)  // function only required for ctpy frontend for testing purposes with non-network tokens
-    });
-
-    const testTokenCreator = Participant('Creator', {});    // token creator participant only required for testing purposes with non-network tokens
+    });   // token creator participant only required for testing purposes with non-network tokens
 
     // define announcer object to track and announce key events
     const Announcer = Events('Announcer', {
@@ -143,12 +141,12 @@ export const main = Reach.App(() => {
         commit();*/
         // send non-network tokens to Ctpy from 'creator' account so they can be used in the swaps (owner mints balances in each non-network token in frontend so doesn't need any transfers) 
         // for testing purposes only - on TestNet/MainNet the participants would need sufficient balances in the tokens prior with appropriate ASA ids to the trade
-        testTokenCreator.pay([[50000, tokenOBCL]]); // send 50k of created wETH tokens to contract
+        Owner.pay([[50000 * 1000000, tokenOBCL]]); // send 50k of created wETH tokens to contract
         commit();
-        testTokenCreator.pay([[5000, tokenOLCB]]);  // send 5k of created wBTC tokens to contract
+        Owner.pay([[5000 * 1000000, tokenOLCB]]);  // send 5k of created wBTC tokens to contract
         // check contact balance >= transferAmt
-        transfer(50000, tokenOBCL).to(Ctpy);
-        transfer(5000, tokenOLCB).to(Ctpy);
+        transfer(50000 * 1000000, tokenOBCL).to(Ctpy);
+        transfer(5000 * 1000000, tokenOLCB).to(Ctpy);
         commit();
         Ctpy.publish();
 
@@ -200,14 +198,6 @@ export const main = Reach.App(() => {
                     Ctpy.publish(bwhen);
                     commit();
                     Ctpy.pay([ [amtCtO, ((pmtNum==0) ? tokenLookUp.first[1] : tokenLookUp.rest[1])] ])
-                            .when(bwhen)
-                            .timeout(relativeTime(time), () => {
-                                Owner.publish();
-                                transfer(amtOtC, ((pmtNum==0) ? tokenLookUp.first[0] : tokenLookUp.rest[0])).to(Owner);     // returns Owner's funds back to Owner on timeout (i.e. default) from Counterparty
-                                Announcer.default(ctpyAddr); // default event
-                                commit();
-                                exit();
-                    });
                     transfer(amtCtO, ((pmtNum==0) ? tokenLookUp.first[1] : tokenLookUp.rest[1])).to(Owner);   // if lockPrincipal == true then could delay this transfer out of the contract escrow until the last payment / cash flow
                     transfer([ [amtOtC, ((pmtNum==0) ? tokenLookUp.first[0] : tokenLookUp.rest[0])] ]).to(Ctpy);
                     each([Owner, Ctpy], () => interact.seeTransfer());
