@@ -44,6 +44,11 @@ const fmt = (x) => stdlib.formatCurrency(x, 4);
 const getBalance = async (p) => fmt(await stdlib.balanceOf(p));
 const get_wBTC_Balance = async (p) => fmt(await stdlib.balanceOf(p, process.env.WBTC_ID));
 const get_wETH_Balance = async (p) => fmt(await stdlib.balanceOf(p, process.env.WETH_ID));
+const connector_before = await getBalance(acc);
+var wBTC_before_Owner = 0;
+var wETH_before_Owner = 0;
+var wBTC_before_Ctpy = 0;
+var wETH_before_Ctpy = 0;
 
 let ctc = null;
 if (isOwner) {
@@ -52,11 +57,11 @@ if (isOwner) {
     ctc.getInfo().then((info) => {
         console.log(`\nThe new trade quote's underlying smart contract has been deployed as = ${JSON.stringify(info)}`); 
     });
-    const accCreator = await stdlib.newTestAccount(startingBalance);
-    const wBTC = await stdlib.launchToken(accCreator, "wBTC", "wBTC"); /* ASA token representing 'wrapped' BTC launched (this is for testing purposes; 
+    // const accCreator = await stdlib.newTestAccount(startingBalance);
+    const wBTC = await stdlib.launchToken(acc, "wBTC", "wBTC"); /* ASA token representing 'wrapped' BTC launched (this is for testing purposes; 
                                                                          we assume that both participants have a holding which is needed for the 
                                                                         cross-cryptocurrency swap contract) */
-    const wETH = await stdlib.launchToken(accCreator, "wETH", "wETH"); /* ASA token representing 'wrapped' ETH launched (this is for testing purposes; 
+    const wETH = await stdlib.launchToken(acc, "wETH", "wETH"); /* ASA token representing 'wrapped' ETH launched (this is for testing purposes; 
                                                                         we assume that both participants have a holding which is needed for the 
                                                                         cross-cryptocurrency swap contract) */
 
@@ -69,12 +74,15 @@ if (isOwner) {
     console.log(`wBTC: ${process.env.WBTC_ID} | wETH: ${process.env.WETH_ID}`);
     await acc.tokenAccept(process.env.WBTC_ID);
     await acc.tokenAccept(process.env.WETH_ID);
-    await wBTC.mint(acc, convertToMicroUnits(5000));
-    await wETH.mint(acc, convertToMicroUnits(50000));
-    console.log(`Your wBTC balance is ${await get_wBTC_Balance(acc)}`);
-    console.log(`Your wETH balance is ${await get_wETH_Balance(acc)}`);
+    /*await wBTC.mint(acc, convertToMicroUnits(5000));
+    await wETH.mint(acc, convertToMicroUnits(50000));*/
+    wBTC_before_Owner = (await get_wBTC_Balance(acc))+5000;
+    wETH_before_Owner = (await get_wETH_Balance(acc))+50000;
+    console.log(`Your wBTC balance is ${wBTC_before_Owner}`);
+    console.log(`Your wETH balance is ${wETH_before_Owner}`);
 } else {
     console.log(`\nYour ${stdlib.connector} balance is ${await getBalance(acc)}`);
+    console.log(`Your wBTC balance is 5000\nYour wETH balance is 50000`)
     const info = await ask.ask(
         `\nPlease enter the active quote's underlying smart contract address`,
         JSON.parse
@@ -118,7 +126,7 @@ announceEvent.executed.monitor(eventExecuted);
 
 const eventDefault = ({ when, what }) => {   
     console.log(`\n<!> A default on payment has occurred [Ntime: ${when}]\n` +
-                `Defaulting party: ${what}\n` +
+                `Defaulting party: ${stdlib.formatAddress(what)}\n` +
                 `This contract will now follow standard default procedures and the smart contract will be terminated...`)
     
 };
@@ -171,7 +179,7 @@ if (isOwner) {
                           'termToMaturity': term,    
                           'pmtFrequency': freq,   
                           'totalNumPmts': ((term * freq)+1),  // might need to experiment with this
-                          'prevPmt': 8,
+                          'prevPmt': 0,
                           'nextPmt': 1,
                           'contractAddress': stdlib.formatAddress(info),  
                           'ownerAddress': stdlib.formatAddress(acc.getAddress()),
@@ -185,10 +193,6 @@ if (isOwner) {
                           'haircut': haircut};
         return getTerms;
     };
-    /*interact.isInitialised = () => {
-        console.log(`\nTrade terms have been set\n\n` +
-                    `Waiting for counterparty to accept...`)
-    };*/
     interact.getSwap = async () => {
         let currTradeState = await viewTrade.read();
         // calculate interest payable by owner to counterparty (result scaled up to an UInt from 6 d.p.) i.e. will be in microunits
@@ -235,30 +239,32 @@ if (isOwner) {
     const accept = await ask.ask(
         `\nDo you accept these terms? [y/n]`,
         ask.yesno
-    );
-    if (!accept) {  // can maybe get rid of this
-        process.exit(0);
-    } 
+    ); 
     return accept;
   };
-  interact.accSwap = async (tokenOtC, amtOtC, tokenCtO, amtCtO, time) => {
+  interact.accSwap = async (pmtNum, amtOtC, amtCtO, time) => {
       // try do a balance check here for Owner to see if any funds have moved
       let currTradeState = await viewTrade.read();
-      const payIndex = currTradeState[1].prevPmt;
       const totPayIndex = currTradeState[1].totalNumPmts;
+      const tok_wBTC = currTradeState[1].token_Owner_lend_Ctpy_borrow;
+      const tok_wETH = currTradeState[1].token_Owner_borrow_Ctpy_lend;
       const msgCtpy =
-                          payIndex == 0 ? `\nSwap payment due. Payment Type: Initial exchange of principal\n\n` :
-            payIndex == (totPayIndex-1) ? `\nSwap payment due. Payment Type: Final exchange of principal and interest\n\n` :
+                          pmtNum == 0 ? `\nSwap payment due. Payment Type: Initial exchange of principal\n\n` :
+            pmtNum == (totPayIndex-1) ? `\nSwap payment due. Payment Type: Final exchange of principal and interest\n\n` :
                       /* interest only */ `\nSwap payment due. Payment Type: Exchange of interest\n\n`
       const confirmSwap = await ask.ask(
         `${msgCtpy}` +
-        `Counterparty pays ${(amtCtO / 1000000)} (${getSym(tokenCtO)}) => Owner\n` +    // need to figure a way to convert back from id to sym
-        `Counterparty receives ${(amtOtC / 1000000)} (${getSym(tokenOtC)}) <= Owner\n` +    // need to figure a way to convert back from id to sym
+        `Counterparty pays ${(amtCtO / 1000000)} (${getSym((pmtNum == 0) ? tok_wETH : tok_wBTC)}) => Owner\n` +    
+        `Counterparty receives ${(amtOtC / 1000000)} (${getSym((pmtNum == 0) ? tok_wBTC : tok_wETH)}) <= Owner\n` +    
         `Timeout limit set to: ${time}\n\n` +
         `Before proceeding ensure sufficient funds are available for payment to the swap within the timeout limit\n` +
         `Enter 'y' to confirm and send funds to the smart contract escrow and settle the swap payment...`,
         ask.yesno
       );
+      if (pmtNum==0) {
+      wBTC_before_Ctpy = await get_wBTC_Balance(acc);
+      wETH_before_Ctpy = await get_wETH_Balance(acc);
+      }
       return confirmSwap;
   };
 }
@@ -266,7 +272,7 @@ if (isOwner) {
 interact.seeState = async (first) => {
     let currTradeState = await viewTrade.read();
     const anyCtpyAddr = (currTradeState[1].acceptedStatus==false) ? `<n/a - waiting for counterparty to accept>` : stdlib.formatAddress(currTradeState[1].ctpyAddress);
-    const footer = (first == true) ? `\nTrade terms have been set\n\nWaiting for counterparty to accept...` : `\n`
+    const footer = (first == true) ? `\n\nTrade terms have been set\n\nWaiting for counterparty to accept...` : `\n`
     console.log(`\nCurrent state of the swap contract:\n\n` +
                 `Accepted Status:                   ${currTradeState[1].acceptedStatus}\n` +
                 `Default Status:                    ${currTradeState[1].defaultStatus}\n` +
@@ -293,23 +299,27 @@ interact.seeState = async (first) => {
 };
 
 interact.seeTransfer = () => {
-    console.log(`Transfer was successful`)  // flesh out
+    console.log(`\nTransfer was successful!\n`)  // flesh out
 };
 
-interact.checkBal = (tok) => {
+/*interact.checkBal = (tok) => {
     const sym = (tok == process.env.WBTC_ID) ? `wBTC` : `wETH`;
     if (sym == 'wBTC') {
         console.log(`Your ${sym} balance is ${get_wBTC_Balance(acc)}`);
     } else {
         console.log(`Your ${sym} balance is ${get_wETH_Balance(acc)}`);
     }
-};
+};*/
 
 const part = isOwner ? ctc.p.Owner : ctc.p.Ctpy;
 await part(interact);
 
-console.log(`\nYour ${stdlib.connector} balance is ${await getBalance(acc)}`);
-console.log(`Your wBTC balance is ${await get_wBTC_Balance(acc)}`);
-console.log(`Your wETH balance is ${await get_wETH_Balance(acc)}`);
+const connector_after = await getBalance(acc);
+const delta_connector = connector_after - connector_before;
+const wBTC_after = await get_wBTC_Balance(acc);
+const wETH_after = await get_wETH_Balance(acc);
+console.log(`\nYour ${stdlib.connector} balance is ${connector_after} (Delta: ${delta_connector})`);
+console.log(`Your wBTC balance is ${wBTC_after} (Delta: ${(((isOwner) ? (wBTC_after - wBTC_before_Owner + 5000) : (wBTC_after - wBTC_before_Ctpy)))})`);
+console.log(`Your wETH balance is ${wETH_after} (Delta: ${(((isOwner) ? (wETH_after - wETH_before_Owner + 50000) : (wETH_after - wETH_before_Ctpy) ))})`);
 
 ask.done();
