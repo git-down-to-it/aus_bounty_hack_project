@@ -12,18 +12,7 @@ const convertToMicroUnits = (amt) => Math.round(amt * MICRO_UNITS);
 const convertFromMicroUnits = (amt) => amt / MICRO_UNITS;
 
 const startingBalance = stdlib.parseCurrency(1000);
-const acc = await stdlib.newTestAccount(startingBalance);    // set up new test account for network (on ALGO) for each participant
-
-/*const wBTC = await stdlib.launchToken(accCreator, "wBTC", "wBTC")   /* ASA token representing BTC launched (this is for testing purposes; 
-                                                              we assume that both participants have a holding which is needed for the 
-                                                              cross-cryptocurrency swap contract) */
-
-/*const wETH = await stdlib.launchToken(accCreator, "wETH", "wETH")   /* ASA token representing ETH launched (this is for testing purposes; 
-                                                              we assume that both participants have a holding which is needed for the 
-                                                              cross-cryptocurrency swap contract) */                                                            
-
-// the choices of wrapped BTC and ETH are deliberate as the project is meant to mimic the first (?) cross-cryptocurrency swap contract executed by Babel Finance (see https://babel.finance/notice-detail.html?id=8)
-// this project showcases how this swap could effectively have been executed on-chain
+const acc = await stdlib.newTestAccount(startingBalance);    // set up new test account for network (on ALGO) for each participant                                                           
 
 const getTok = (sym) => {
     if (sym == 'wBTC') {
@@ -64,8 +53,16 @@ if (isOwner) {
         console.log(`\nThe new trade quote's underlying smart contract has been deployed as = ${JSON.stringify(info)}`); 
     });
     const accCreator = await stdlib.newTestAccount(startingBalance);
-    const wBTC = await stdlib.launchToken(accCreator, "wBTC", "wBTC");
-    const wETH = await stdlib.launchToken(accCreator, "wETH", "wETH");
+    const wBTC = await stdlib.launchToken(accCreator, "wBTC", "wBTC"); /* ASA token representing 'wrapped' BTC launched (this is for testing purposes; 
+                                                                         we assume that both participants have a holding which is needed for the 
+                                                                        cross-cryptocurrency swap contract) */
+    const wETH = await stdlib.launchToken(accCreator, "wETH", "wETH"); /* ASA token representing 'wrapped' ETH launched (this is for testing purposes; 
+                                                                        we assume that both participants have a holding which is needed for the 
+                                                                        cross-cryptocurrency swap contract) */
+
+    // the choices of wrapped BTC and ETH are deliberate as the project is meant to mimic the first (?) cross-cryptocurrency swap contract executed by Babel Finance (see https://babel.finance/notice-detail.html?id=8)
+    // this project showcases how this swap could effectively have been executed on-chain                                                                        
+    
     console.log(`wBTC: ${process.env.WBTC_ID} | wETH: ${process.env.WETH_ID}`);
     process.env.WBTC_ID = wBTC.id;
     process.env.WETH_ID = wETH.id;
@@ -110,20 +107,20 @@ announceEvent.contractEnd.monitor(eventCtcEnd);
 
 const eventExecuted = ({ when, what }) => {
     if (what) {     
-        console.log(`\n<!> Trade has been successfully executed!  [Ntime: ${when}]\n` +
-                    `See below for final trade confirmation details...`)
+        console.log(`\n<!> Trade has been successfully executed!  [Ntime: ${when}]\n`)
     } else {
-        console.log(`\n<!> Trade execution has failed, due to default on initial exchange of principal\n` +
+        console.log(`\n<!> Trade execution has failed, due to default on initial exchange of principal [Ntime: ${when}]\n` +
                     `Any principal amounts deposited within the timeout limit will be returned\n` +
                     `This quote will be withdrawn from the market and smart contract terminated...`)
     }
 };
 announceEvent.executed.monitor(eventExecuted); 
 
-const eventDefault = ({ when, what }) => {  // to be edited for default process
-    if (what) {     
-        console.log(`\n<!> End of Contract [Ntime: ${when}]`)
-    }
+const eventDefault = ({ when, what }) => {   
+    console.log(`\n<!> A default on payment has occurred [Ntime: ${when}]\n` +
+                `Defaulting party: ${what}\n` +
+                `This contract will now follow standard default procedures and the smart contract will be terminated...`)
+    
 };
 announceEvent.default.monitor(eventDefault);
 
@@ -131,12 +128,12 @@ const interact = {};
 
 if (isOwner) {
     // 'ask' for the two tokens/currencies being swapped in the contract
-    const Owner_lend_token_str = await ask.ask(     // have something here to map to token objects created above ... if you have time
+    const Owner_lend_token_str = await ask.ask(     
         `\nSet swap tokens:\nPlease enter the token you wish to lend`   // set to 'wBTC'
     );
     const Owner_lend_token_id = getTok(Owner_lend_token_str);
 
-    const Ctpy_lend_token_str = await ask.ask(      // have something here to map to token objects created above ... if you have time
+    const Ctpy_lend_token_str = await ask.ask(      
         `\nPlease enter the token you wish to borrow`   // set to 'wETH'
     );
     const Ctpy_lend_token_id = getTok(Ctpy_lend_token_str);
@@ -152,7 +149,7 @@ if (isOwner) {
     );
 
     const amt = await ask.ask(
-        `\nPlease enter the principal amount being loaned (in units of ${Owner_lend_token_str})`,  // set to ~1,226.06807081 (representing ~50m USD equivalent)
+        `\nPlease enter the principal amount being loaned (in units of ${Owner_lend_token_str})`,  // set to ~1,684 (representing ~50m USD equivalent as at 15/05/2022)
         stdlib.parseCurrency
     );
 
@@ -161,7 +158,7 @@ if (isOwner) {
 
     // default: haircut, lockPrincipal, timeouts
     // assumed pricing: spot exchange rate, swap rates
-    const spot = 13;   // 1 BTC = ~13 ETH
+    const spot = 1472112471;   // = 14.72112471 * 10 ^ 8 => 1 BTC = ~14 ETH, as at 15/05/2022
     const haircut = 15;
     const lock = false;
     interact.setInitTerms = (info) => {
@@ -174,41 +171,55 @@ if (isOwner) {
                           'termToMaturity': term,    
                           'pmtFrequency': freq,   
                           'totalNumPmts': ((term * freq)+1),  // might need to experiment with this
-                          'prevPmt': 0,
+                          'prevPmt': 8,
                           'nextPmt': 1,
                           'contractAddress': stdlib.formatAddress(info),  
                           'ownerAddress': stdlib.formatAddress(acc.getAddress()),
                           'ctpyAddress': stdlib.formatAddress('0x'),      // dummy 'empty' address for initialisation - before ctpy is confirmed (need to fix this to work for ALGO & ETH)
                           'principalAmtOwner': amt,
-                          'spotExchangeRate': spot,
+                          'spotExchangeRate': spot,     // rate * 10 ^ 18, so can pass a
                           'principalAmtCtpy': stdlib.bigNumberify(amt * spot),
-                          'swapRateOwnerPay': 1, 
-                          'swapRateCtpyPay': 2, 
+                          'swapRateOwnerPay': 44683,    // = 4.4683% rate * 10 ^ 4, so can pass a % with up to 4 dp to backend which can only handle integers. this will be scaled back in frontend accordingly.
+                          'swapRateCtpyPay': 9212,     // = 0.9212% rate * 10 ^ 4, so can pass a % with up to 4 dp to backend which can only handle integers. this will be scaled back in frontend accordingly.
                           'lockPrincipal': lock,
                           'haircut': haircut};
         return getTerms;
     };
-    interact.isInitialised = () => {
+    /*interact.isInitialised = () => {
         console.log(`\nTrade terms have been set\n\n` +
                     `Waiting for counterparty to accept...`)
-    };
-    interact.getSwap = () => {
-        //let currTradeState = await viewTrade.read();
-        //[ tokenOtC, amtOtC, tokenCtO, amtCtO, time ]
-        //prevPmt, nextPmt, totalPmts, token_Owner_lend_Ctpy_borrow, token_Owner_borrow_Ctpy_lend, principalAmtOwner, principalAmtCtpy
-        //swapRateOwner, swapRateCtpy, spotExchRate, timeouts, ...
-        //if block that picks up correct symbols
-        const [tokenOtC, amtOtC, tokenCtO, amtCtO, time] = [process.env.WBTC_ID,1,process.env.WETH_ID,13,5];
-        console.log(`\nSwap payment due. Payment Type: Initial exchange of principal\n\n` +
-                    `Owner pays ${amtOtC} (${getSym(tokenOtC)}) => Counterparty\n` +    // need to figure a way to convert back from id to sym
-                    `Owner receives ${amtCtO} (${getSym(tokenCtO)}) <= Counterparty\n` +    // need to figure a way to convert back from id to sym
+    };*/
+    interact.getSwap = async () => {
+        let currTradeState = await viewTrade.read();
+        // calculate interest payable by owner to counterparty (result scaled up to an UInt from 6 d.p.) i.e. will be in microunits
+        const intPayOtC = Math.round((currTradeState[1].principalAmtCtpy / 100000000) * (Math.E ** (((currTradeState[1].swapRateOwnerPay) / 1000000) * (1 / (currTradeState[1].pmtFrequency))) - 1));
+        // calculate interest payable by counterparty to owner (result scaled up to an UInt from 6.p.) i.e. will be in microunits
+        const intPayCtO = Math.round(1000000 * (currTradeState[1].principalAmtOwner / 1000000) * (Math.E ** (((currTradeState[1].swapRateCtpyPay) / 1000000) * (1 / (currTradeState[1].pmtFrequency))) - 1));
+        const tokOBCL = currTradeState[1].token_Owner_borrow_Ctpy_lend;
+        const tokOLCB = currTradeState[1].token_Owner_lend_Ctpy_borrow;
+        const pOwner = Math.round((currTradeState[1].principalAmtOwner));
+        const pCtpy = Math.round(((currTradeState[1].principalAmtCtpy) / 100000000));
+        const payNum = currTradeState[1].prevPmt;
+        const pTime = currTradeState[1].principalTimeoutLimit;
+        const iTime = currTradeState[1].interestTimeoutLimit;
+        const totPayNum = currTradeState[1].totalNumPmts;
+        const                         [pmtNum,              amtOtC,               amtCtO,  time, tokenOtC, tokenCtO] =
+                        payNum == 0 ? [payNum,              pOwner,                pCtpy, pTime, tokOLCB,   tokOBCL] :
+            payNum == (totPayNum-1) ? [payNum, (pCtpy + intPayOtC), (pOwner + intPayCtO), pTime, tokOBCL,   tokOLCB] :
+            /* interest pmts only */  [payNum,           intPayOtC,            intPayCtO, iTime, tokOBCL,   tokOLCB]
+
+        //const [tokenOtC, amtOtC, tokenCtO, amtCtO, time] = [process.env.WBTC_ID,1,process.env.WETH_ID,13,5];
+        const msgOwner = 
+                            payNum == 0 ? `\nSwap payment due. Payment Type: Initial exchange of principal\n\n` :
+              payNum == (totPayNum-1) ? `\nSwap payment due. Payment Type: Final exchange of principal and interest\n\n` :
+                 /* interest pmts only */ `\nSwap payment due. Payment Type: Exchange of interest\n\n`
+        console.log(`${msgOwner}` +
+                    `Owner pays ${(amtOtC / 1000000)} (${getSym(tokenOtC)}) => Counterparty\n` +    // need to figure a way to convert back from id to sym
+                    `Owner receives ${((amtCtO) / 1000000)} (${getSym(tokenCtO)}) <= Counterparty\n` +    // need to figure a way to convert back from id to sym
                     `Timeout limit set to: ${time}\n\n` +
                     `Sending payment to smart contract escrow...\n` +
                     `Waiting for Counterparty payment to contract escrow...`);
-        return [tokenOtC, amtOtC, tokenCtO, amtCtO, time];
-    };
-    interact.checkBal = (bal) => {
-        console.log(`Ctc wBTC balance is ${bal}`)
+        return [pmtNum, amtOtC, amtCtO, time];
     };
 } else {
   interact.passAddr = acc.getAddress();
@@ -232,10 +243,17 @@ if (isOwner) {
   };
   interact.accSwap = async (tokenOtC, amtOtC, tokenCtO, amtCtO, time) => {
       // try do a balance check here for Owner to see if any funds have moved
+      let currTradeState = await viewTrade.read();
+      const payIndex = currTradeState[1].prevPmt;
+      const totPayIndex = currTradeState[1].totalNumPmts;
+      const msgCtpy =
+                          payIndex == 0 ? `\nSwap payment due. Payment Type: Initial exchange of principal\n\n` :
+            payIndex == (totPayIndex-1) ? `\nSwap payment due. Payment Type: Final exchange of principal and interest\n\n` :
+                      /* interest only */ `\nSwap payment due. Payment Type: Exchange of interest\n\n`
       const confirmSwap = await ask.ask(
-        `\nSwap payment due. Payment Type: Initial exchange of principal\n\n` +
-        `Counterparty pays ${amtCtO} (${getSym(tokenCtO)}) => Owner\n` +    // need to figure a way to convert back from id to sym
-        `Counterparty receives ${amtOtC} (${getSym(tokenOtC)}) <= Owner\n` +    // need to figure a way to convert back from id to sym
+        `${msgCtpy}` +
+        `Counterparty pays ${(amtCtO / 1000000)} (${getSym(tokenCtO)}) => Owner\n` +    // need to figure a way to convert back from id to sym
+        `Counterparty receives ${(amtOtC / 1000000)} (${getSym(tokenOtC)}) <= Owner\n` +    // need to figure a way to convert back from id to sym
         `Timeout limit set to: ${time}\n\n` +
         `Before proceeding ensure sufficient funds are available for payment to the swap within the timeout limit\n` +
         `Enter 'y' to confirm and send funds to the smart contract escrow and settle the swap payment...`,
@@ -245,8 +263,10 @@ if (isOwner) {
   };
 }
 
-interact.seeState = async () => {
+interact.seeState = async (first) => {
     let currTradeState = await viewTrade.read();
+    const anyCtpyAddr = (currTradeState[1].acceptedStatus==false) ? `<n/a - waiting for counterparty to accept>` : stdlib.formatAddress(currTradeState[1].ctpyAddress);
+    const footer = (first == true) ? `\nTrade terms have been set\n\nWaiting for counterparty to accept...` : `\n`
     console.log(`\nCurrent state of the swap contract:\n\n` +
                 `Accepted Status:                   ${currTradeState[1].acceptedStatus}\n` +
                 `Default Status:                    ${currTradeState[1].defaultStatus}\n` +
@@ -261,34 +281,35 @@ interact.seeState = async () => {
                 `Next Payment Index:                ${currTradeState[1].nextPmt}\n` +
                 `Contract Address:                  ${stdlib.formatAddress(currTradeState[1].contractAddress)}\n` +    
                 `Owner Address:                     ${stdlib.formatAddress(currTradeState[1].ownerAddress)}\n` +
-                `Counterparty Address:              ${stdlib.formatAddress(currTradeState[1].ctpyAddress)}\n` +
+                `Counterparty Address:              ${anyCtpyAddr}\n` +
                 `Principal Amt (Owner):             ${convertFromMicroUnits(currTradeState[1].principalAmtOwner)}\n` +
-                `Spot Exchange Rate:                ${currTradeState[1].spotExchangeRate}\n` +
-                `Principal Amt (Counterparty):      ${convertFromMicroUnits(currTradeState[1].principalAmtCtpy)}\n` +
-                `Swap Rate - Owner Pays (%):        ${currTradeState[1].swapRateOwnerPay}\n` +
-                `Swap Rate - Counterparty Pays (%): ${currTradeState[1].swapRateCtpyPay}\n` +
+                `Spot Exchange Rate:                ${currTradeState[1].spotExchangeRate / 100000000}\n` +
+                `Principal Amt (Counterparty):      ${convertFromMicroUnits(currTradeState[1].principalAmtCtpy) / 100000000}\n` +
+                `Swap Rate - Owner Pays (%):        ${currTradeState[1].swapRateOwnerPay / 10000}\n` +
+                `Swap Rate - Counterparty Pays (%): ${currTradeState[1].swapRateCtpyPay / 10000}\n` +
                 `Principal Lock:                    ${currTradeState[1].lockPrincipal}\n` +
-                `Haircut (%):                       ${currTradeState[1].haircut}`);
+                `Haircut (%):                       ${currTradeState[1].haircut}` +
+                `${footer}`);
 };
 
 interact.seeTransfer = () => {
     console.log(`Transfer was successful`)  // flesh out
 };
-interact.seeTimeout = () => {
-    console.log(`Timeout occurred`)     // flesh out
+
+interact.checkBal = (tok) => {
+    const sym = (tok == process.env.WBTC_ID) ? `wBTC` : `wETH`;
+    if (sym == 'wBTC') {
+        console.log(`Your ${sym} balance is ${get_wBTC_Balance(acc)}`);
+    } else {
+        console.log(`Your ${sym} balance is ${get_wETH_Balance(acc)}`);
+    }
 };
 
 const part = isOwner ? ctc.p.Owner : ctc.p.Ctpy;
 await part(interact);
 
-if (isOwner) {
-    console.log(`\nYour ${stdlib.connector} balance is ${await getBalance(accOwner)}`);
-    console.log(`Your wBTC balance is ${await get_wBTC_Balance(accOwner)}`);
-    console.log(`Your wETH balance is ${await get_wETH_Balance(accOwner)}`);
-} else {
-    console.log(`\nYour ${stdlib.connector} balance is ${await getBalance(accCtpy)}`);
-    console.log(`Your wBTC balance is ${await get_wBTC_Balance(accCtpy)}`);
-    console.log(`Your wETH balance is ${await get_wETH_Balance(accCtpy)}`);
-}
+console.log(`\nYour ${stdlib.connector} balance is ${await getBalance(acc)}`);
+console.log(`Your wBTC balance is ${await get_wBTC_Balance(acc)}`);
+console.log(`Your wETH balance is ${await get_wETH_Balance(acc)}`);
 
 ask.done();

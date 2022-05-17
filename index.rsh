@@ -4,9 +4,9 @@
 
 // define common interact 
 const CommonInteract = {
-    seeState: Fun([], Null), // function where both participants can view the current state of the swap contract
+    seeState: Fun([Bool], Null), // function where both participants can view the current state of the swap contract, bool is true if this is the first view (i.e. when terms are first set)
     seeTransfer: Fun([], Null),
-    seeTimeout: Fun([], Null)
+    checkBal: Fun([Token], Null)
 };
 
 export const main = Reach.App(() => {
@@ -41,9 +41,7 @@ export const main = Reach.App(() => {
                                              'swapRateCtpyPay': UInt, // decimal?
                                              'lockPrincipal': Bool,
                                              'haircut': UInt})), // haircut rate in % applied to principal on defaulting party
-        isInitialised: Fun([], Null),    // function that reports back to Owner that the swap derivative contract terms have been set
-        getSwap: Fun([], Tuple(Token, UInt, Token, UInt, UInt)),
-        checkBal: Fun([UInt], Null)
+        getSwap: Fun([], Tuple(UInt, UInt, UInt, UInt)),
     });
 
     // define counterparty participant attaching to the contract
@@ -51,7 +49,7 @@ export const main = Reach.App(() => {
         ...CommonInteract,
         acceptTrade: Fun([], Bool),   // function that returns true if ctpy accepts the trade
         passAddr: Address,
-        accSwap: Fun([Token, UInt, Token, UInt, UInt], Bool),
+        accSwap: Fun([UInt, UInt, UInt, UInt], Bool),
         getTokenIds: Fun([Token, Token], Null)  // function only required for ctpy frontend for testing purposes with non-network tokens
     });
 
@@ -61,8 +59,7 @@ export const main = Reach.App(() => {
     const Announcer = Events('Announcer', {
         accepted: [Bool, Address],    // announces that the trade terms have been accepted or rejected
         executed: [Bool],    // announces that trade execution has succeeded or failed
-        //payment: [UInt, UInt, UInt],  // may need to add tokens in as well
-        default: [Address, UInt], // will announce that a default has occurred, who the defaulting participant is and on what payment / cashflow number
+        default: [Address], // will announce that a default has occurred and who the defaulting participant is
         contractEnd: [Bool] /* announces when the contract ends - either from:
                                     1) the owner ending the contract because the counterparty didn't accept
                                     2) closing the contract on default
@@ -108,26 +105,25 @@ export const main = Reach.App(() => {
     // first local step by the contract Owner
     Owner.only(() => {
         const initTerms = declassify(interact.setInitTerms(info));   // owner declassifies the initial terms of the swap contract they have chosen
+        const tokenOBCL = initTerms.token_Owner_borrow_Ctpy_lend;
+        const tokenOLCB = initTerms.token_Owner_lend_Ctpy_borrow;
+        check(tokenOBCL != tokenOLCB);
     });
-    Owner.publish(initTerms);
+    Owner.publish(initTerms, tokenOBCL, tokenOLCB);
     
     // initialise Trade State view object to show terms set out by the owner upon deployment
     tradeState.read.set(    
         tradeTerms.fromObject(initTerms)
     );
-
     commit();
 
-    // interact call here confirms to owner what the terms of the cross-cryptocurrency swap contract are initially set to upon deployment
-    Owner.interact.seeState();
-
-    // interact call lets owner know that the terms of the swap contract have been set and waiting for the counterparty
-    Owner.interact.isInitialised();
+    // interact call here confirms to owner what the terms of the cross-cryptocurrency swap contract are initially set to upon deployment, and waiting for counterparty
+    Owner.interact.seeState(true);
 
     // first local step by contract Counterparty
     Ctpy.only(() => {
-        interact.getTokenIds(initTerms.token_Owner_borrow_Ctpy_lend, initTerms.token_Owner_lend_Ctpy_borrow); // only required for testing with non-network tokens
-        interact.seeState();
+        interact.getTokenIds(tokenOBCL, tokenOLCB); // only required for testing with non-network tokens
+        interact.seeState(false);
         const resp = declassify(interact.acceptTrade());   // the attaching participant has to decide whether they will accept the terms of the trade (as the counterparty)
         const ctpyAddr = declassify(interact.passAddr); // could change this to separate local step so that ctpy doesn't give up their address unless they actually want to accept
     });
@@ -138,61 +134,128 @@ export const main = Reach.App(() => {
     // comment?
     if (resp) {
         commit();
-        testTokenCreator.only(() =>{
+        /*testTokenCreator.only(() =>{
             const tokenOBCL = initTerms.token_Owner_borrow_Ctpy_lend;
             const tokenOLCB = initTerms.token_Owner_lend_Ctpy_borrow;
             check(tokenOBCL != tokenOLCB); });
-        testTokenCreator.publish(tokenOBCL, tokenOLCB);
+        testTokenCreator.publish(tokenOBCL, tokenOLCB); // need to publish already declared variables?
         require(tokenOBCL != tokenOLCB);
+        commit();*/
+        // send non-network tokens to Ctpy from 'creator' account so they can be used in the swaps (owner mints balances in each non-network token in frontend so doesn't need any transfers) 
+        // for testing purposes only - on TestNet/MainNet the participants would need sufficient balances in the tokens prior with appropriate ASA ids to the trade
+        testTokenCreator.pay([[50000, tokenOBCL]]); // send 50k of created wETH tokens to contract
         commit();
-        // send non-network tokens to Ctpy from 'creator' account so they can be used in the swaps (owner mints balances in each non-network token in frontend) 
-        // for testing purposes only - on Testnet/Mainnet the participants would need sufficient balances in the tokens prior with appropriate ASA ids to the trade
-        testTokenCreator.pay([[50000, tokenOBCL]]); // essentially send 50k of created wETH tokens to contract
-        commit();
-        testTokenCreator.pay([[5000, tokenOLCB]]);  // essentially send 5k of created wBTC tokens to contract
+        testTokenCreator.pay([[5000, tokenOLCB]]);  // send 5k of created wBTC tokens to contract
         // check contact balance >= transferAmt
         transfer(50000, tokenOBCL).to(Ctpy);
         transfer(5000, tokenOLCB).to(Ctpy);
-        
+        commit();
+        Ctpy.publish();
+
         // update trade state view based on ctpy response
+        const acceptedTerms = {...initTerms,acceptedStatus:resp,ctpyAddress:ctpyAddr};
         tradeState.read.set(
-            tradeTerms.fromObject({...initTerms,acceptedStatus:resp,ctpyAddress:ctpyAddr})
+            tradeTerms.fromObject(acceptedTerms)
         );
+        commit();
         each([Owner,Ctpy], () => {  // both participants view the state of the swap contract
-            interact.seeState();
+            interact.seeState(false);
         });
-        commit();
-        // rest of the code... go into parallelReduce here
+        //commit();
+        /*const totalPmts = acceptedTerms.totalNumPmts;
+        const [updatedState, inDefault, nextPmt] = parallelReduce([acceptedTerms, false, 1])
+          .define(() => {
+            tradeState.read.set(
+                tradeTerms.fromObject(updatedState)
+            );
+          })
+          .invariant(balance()=0)   // for time being - not sure what else to put
+          .while(!inDefault && (nextPmt <= totalPmts))
+          .case(Owner,
+            (() => ({*/ // atomic swap code
+                    Owner.only(() => {
+                        const [ pmtNum, amtOtC, amtCtO, time ] = declassify(interact.getSwap());    // get swap payment details from the frontend
+                        check((pmtNum>0) && (amtOtC>0) && (amtCtO>0) && (time>0)); });
+                    Owner.publish(pmtNum, amtOtC, amtCtO, time); 
+                    require((pmtNum>0) && (amtOtC>0) && (amtCtO>0) && (time>0));    
+                                                  /* tokenOtC, tokenCTO */
+                    const tokenLookUp = {'first' : [tokenOLCB, tokenOBCL],
+                                         'rest' :  [tokenOBCL, tokenOLCB]}
+                    commit();
+                    Owner.pay([[amtOtC,((pmtNum==0) ? tokenLookUp.first[0] : tokenLookUp.rest[0])]])
+                    /*if (pmtNum == 0) {
+                        commit();
+                        Owner.pay([ [amtOtC, tokenOLCB] ]);
+                    } else {
+                        commit();
+                        Owner.pay([ [amtOtC, tokenOBCL] ]);
+                    }*/
+                    // what about default by Owner? (I guess you can have a check somewhere that ensures Owner has sufficient balance?...)
+                    commit();
+                    /*Owner.interact.checkBal(tokenOLCB);
+                    Owner.interact.checkBal(tokenOBCL);*/
 
-        // test atomic single atomic swap first...
-        Owner.only(() => {
-            const [ tokenOtC, amtOtC, tokenCtO, amtCtO, time ] = declassify(interact.getSwap());    // OtC = Owner to Ctpy, CtO = Ctpy to Owner
-            check(((tokenOtC == tokenOLCB) && (tokenCtO == tokenOBCL)) || ((tokenOtC == tokenOBCL) && (tokenCtO == tokenOLCB))); });
-        Owner.publish(tokenOtC, amtOtC, tokenCtO, amtCtO, time); 
-        require(((tokenOtC == tokenOLCB) && (tokenCtO == tokenOBCL)) || ((tokenOtC == tokenOBCL) && (tokenCtO == tokenOLCB)));   
-        commit();   
-        Owner.pay([ [amtOtC, tokenOtC] ]);      // what about default by Owner? (I guess you can have a check somewhere that ensures Owner has sufficient balance?...)
-        commit();
-        Owner.interact.checkBal(balance(tokenOtC));
-
-        Ctpy.only(() => {
-            const bwhen = declassify(interact.accSwap(tokenOtC, amtOtC, tokenCtO, amtCtO, time)); });
-        Ctpy.pay([ [amtCtO, tokenCtO] ])
-            .when(bwhen)
-            .timeout(relativeTime(time), () => {
-              Owner.publish();
-              transfer(amtOtC, tokenOtC).to(Owner);     // returns Owner's funds back to Owner on timeout (i.e. default) from Counterparty
-              each([Owner, Ctpy], () => interact.seeTimeout());
-              // default event
-              commit();
-              Owner.interact.checkBal(balance(tokenOtC));
-              //exit();
-        });
-        transfer(amtCtO, tokenCtO).to(Owner);   // if lockPrincipal == true then could delay this transfer out of the contract escrow until the last payment / cash flow
-        transfer([ [amtOtC, tokenOtC] ]).to(Ctpy);
-        // executed event here
-        //each([Owner, Ctpy], () => interact.seeTransfer());
-        commit();
+                    Ctpy.only(() => {
+                        const bwhen = declassify(interact.accSwap(pmtNum, amtOtC, amtCtO, time)); });
+                    Ctpy.publish(bwhen);
+                    commit();
+                    Ctpy.pay([ [amtCtO, ((pmtNum==0) ? tokenLookUp.first[1] : tokenLookUp.rest[1])] ])
+                            .when(bwhen)
+                            .timeout(relativeTime(time), () => {
+                                Owner.publish();
+                                transfer(amtOtC, ((pmtNum==0) ? tokenLookUp.first[0] : tokenLookUp.rest[0])).to(Owner);     // returns Owner's funds back to Owner on timeout (i.e. default) from Counterparty
+                                Announcer.default(ctpyAddr); // default event
+                                commit();
+                                exit();
+                    });
+                    transfer(amtCtO, ((pmtNum==0) ? tokenLookUp.first[1] : tokenLookUp.rest[1])).to(Owner);   // if lockPrincipal == true then could delay this transfer out of the contract escrow until the last payment / cash flow
+                    transfer([ [amtOtC, ((pmtNum==0) ? tokenLookUp.first[0] : tokenLookUp.rest[0])] ]).to(Ctpy);
+                    each([Owner, Ctpy], () => interact.seeTransfer());
+                    if (pmtNum == 0) {
+                        Announcer.executed(true) // trade successfully executed
+                    }
+                    commit();
+                    /*if (pmtNum == 0) {
+                        commit();
+                        Ctpy.pay([ [amtCtO, tokenOBCL] ])
+                            .when(bwhen)
+                            .timeout(relativeTime(time), () => {
+                                Owner.publish();
+                                transfer(amtOtC, tokenOLCB).to(Owner);     // returns Owner's funds back to Owner on timeout (i.e. default) from Counterparty
+                                each([Owner, Ctpy], () => interact.seeTimeout());
+                                Announcer.default(ctpyAddr); // default event
+                                commit();
+                                exit();
+                        });
+                        transfer(amtCtO, tokenOBCL).to(Owner);   // if lockPrincipal == true then could delay this transfer out of the contract escrow until the last payment / cash flow
+                        transfer([ [amtOtC, tokenOLCB] ]).to(Ctpy);
+                        each([Owner, Ctpy], () => interact.seeTransfer());
+                        Announcer.executed(true) // trade successfully executed
+                        commit();
+                    } else {
+                        commit();
+                        Ctpy.pay([ [amtCtO, tokenOLCB] ])
+                            .when(bwhen)
+                            .timeout(relativeTime(time), () => {
+                                Owner.publish();
+                                transfer(amtOtC, tokenOBCL).to(Owner);     // returns Owner's funds back to Owner on timeout (i.e. default) from Counterparty
+                                each([Owner, Ctpy], () => interact.seeTimeout());
+                                Announcer.default(ctpyAddr); // default event
+                                commit();
+                                exit();
+                        });
+                        transfer(amtCtO, tokenOLCB).to(Owner);   // if lockPrincipal == true then could delay this transfer out of the contract escrow until the last payment / cash flow
+                        transfer([ [amtOtC, tokenOBCL] ]).to(Ctpy);
+                        each([Owner, Ctpy], () => interact.seeTransfer());
+                        commit(); 
+                    }
+                    /*Ctpy.interact.checkBal(tokenOLCB);
+                    Ctpy.interact.checkBal(tokenOBCL);
+                    
+            /*})),
+           .timeout(DEADLINE, () => {
+             TIMEOUT_BLOCK
+           });*/
 
     } else { // the counterparty did not accept - the owner will have to find another willing counterparty to trade with in the market
         Announcer.contractEnd(true)
@@ -202,11 +265,9 @@ export const main = Reach.App(() => {
     }
     
     Ctpy.publish(); // need this publish and commit here for time being
-    
+    commit();
+    Owner.publish();
     Announcer.contractEnd(true);
-
-    //commit();
-    //Owner.publish();
     commit();
 
     exit();
