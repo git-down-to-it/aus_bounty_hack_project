@@ -68,10 +68,8 @@ if (isOwner) {
     // the choices of wrapped BTC and ETH are deliberate as the project is meant to mimic the first (?) cross-cryptocurrency swap contract executed by Babel Finance (see https://babel.finance/notice-detail.html?id=8)
     // this project showcases how this swap could effectively have been executed on-chain                                                                        
     
-    console.log(`wBTC: ${process.env.WBTC_ID} | wETH: ${process.env.WETH_ID}`);
     process.env.WBTC_ID = wBTC.id;
     process.env.WETH_ID = wETH.id;
-    console.log(`wBTC: ${process.env.WBTC_ID} | wETH: ${process.env.WETH_ID}`);
     await acc.tokenAccept(process.env.WBTC_ID);
     await acc.tokenAccept(process.env.WETH_ID);
     /*await wBTC.mint(acc, convertToMicroUnits(5000));
@@ -228,10 +226,8 @@ if (isOwner) {
 } else {
   interact.passAddr = acc.getAddress();
   interact.getTokenIds = async (wETHid,wBTCid) => {
-    console.log(`WBTC_ID: ${process.env.WBTC_ID} | WETH_ID: ${process.env.WETH_ID}`)
     process.env.WBTC_ID = wBTCid;
     process.env.WETH_ID = wETHid;
-    console.log(`WBTC_ID: ${process.env.WBTC_ID} | WETH_ID: ${process.env.WETH_ID}`)
     await acc.tokenAccept(process.env.WBTC_ID);
     await acc.tokenAccept(process.env.WETH_ID);
   };
