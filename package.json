@@ -1,8 +1,7 @@
 {
-  "name": "@reach-sh/f6298e8c1aafdfbf62eee120078d772c540ad7ab95630da223748b70bd9ab6ef",
+  "name": "@reach-sh/aus-bounty-hack-project",
   "type": "module",
   "dependencies": {
-    "@reach-sh/stdlib": "^0.1.10-rc.5"
   },
   "author": "reach.sh",
   "license": "Apache-2.0",
